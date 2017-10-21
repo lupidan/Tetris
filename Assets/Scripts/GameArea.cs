@@ -8,6 +8,34 @@ public class GameArea : MonoBehaviour
     
     [SerializeField] private Rect _playArea = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
 
+    [SerializeField] private Transform _piecesParent;
+    [SerializeField] private Transform _pooledPiecesParent;
+    [SerializeField] private Piece _piecePrefab;
+
+    private ComponentPool<Piece> _piecePool;
+
+    public void Awake()
+    {
+        this._piecePool = new ComponentPool<Piece>(25,
+            () =>
+            {
+                Piece piece = Instantiate(_piecePrefab);
+                piece.gameObject.SetActive(false);
+                piece.transform.SetParent(_pooledPiecesParent);
+                return piece;
+            },
+            (piece) => 
+            {
+                piece.gameObject.SetActive(true);
+                piece.transform.SetParent(_piecesParent);
+            },
+            (piece) =>
+            {
+                piece.gameObject.SetActive(false);
+                piece.transform.SetParent(_pooledPiecesParent);
+            });
+    }
+
     public void AdjustTetrominoMovement(TetrominoMovement movement)
     {
         LimitTetrominoMovementInPlayArea(movement);
