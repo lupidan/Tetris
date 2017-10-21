@@ -8,16 +8,17 @@ public class GameArea : MonoBehaviour
     
     [SerializeField] private Rect _playArea = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
 
-    public void AdjustTetrominoPosition(Tetromino tetromino)
+    public void AdjustTetrominoMovement(TetrominoMovement movement)
     {
-        LimitTetrominoInPlayArea(tetromino);
+        LimitTetrominoMovementInPlayArea(movement);
     }
 
-    private void LimitTetrominoInPlayArea(Tetromino tetromino)
+    private void LimitTetrominoMovementInPlayArea(TetrominoMovement movement)
     {
+        Tetromino tetromino = movement.Tetromino;
         if (tetromino == null)
             return;
-
+        
         for(int i=0; i < tetromino.ChildBlocks.Length; ++i)
         {
             while (tetromino.ChildBlocks[i].position.x < this._playArea.xMin)
