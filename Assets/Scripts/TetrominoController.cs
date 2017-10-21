@@ -9,6 +9,9 @@ public class TetrominoController : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+		if (this.ActiveTetromino == null || this.GameArea == null)
+			return;
+			
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 			this.ActiveTetromino.MoveRight();
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
