@@ -9,7 +9,7 @@ public class ComponentPool<T> where T : MonoBehaviour
     private Action<T> _getComponentAction;
     private Action<T> _returnComponentAction;
     private Stack<T> _pooledObjects;
-    private int lastInstantiatedAmount;
+    private int _lastInstantiatedAmount;
 
     public ComponentPool(int initialPoolSize, Func<T> instantiateFunction, Action<T> getComponentAction = null, Action<T> returnComponentAction = null)
     {
@@ -22,8 +22,8 @@ public class ComponentPool<T> where T : MonoBehaviour
 
     public T Get()
     {
-        if (this._pooledObjects.Count == 0)
-            InstantiateComponentsIntoPool((lastInstantiatedAmount * 2) + 1);
+        if (_pooledObjects.Count == 0)
+            InstantiateComponentsIntoPool((_lastInstantiatedAmount * 2) + 1);
 
         T component = _pooledObjects.Pop();
         if (_getComponentAction != null)
@@ -43,10 +43,10 @@ public class ComponentPool<T> where T : MonoBehaviour
     {
         for (int i = 0; i < nComponents; i++)
         {
-            var pooledObject = this._instantiateAction();
+            var pooledObject = _instantiateAction();
             _pooledObjects.Push(pooledObject);
         }
         
-        lastInstantiatedAmount = _pooledObjects.Count;
+        _lastInstantiatedAmount = _pooledObjects.Count;
     }
 }
