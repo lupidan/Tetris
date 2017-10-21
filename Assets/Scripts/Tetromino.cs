@@ -8,7 +8,7 @@ public class Tetromino : MonoBehaviour
     private static float HardDropMultiplier = 10.0f;
     private static float RotationAngleInDegrees = 90.0f;
 
-    public Transform[] ChildBlocks { get { return _childBlocks;} }
+    public Transform[] ChildBlocks { get { return _childBlocks; } }
 
     [SerializeField] private Transform[] _childBlocks;
 
