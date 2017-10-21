@@ -266,6 +266,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1293686289242226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4930710104887528}
+  m_Layer: 0
+  m_Name: Pieces
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1315910018158844
 GameObject:
   m_ObjectHideFlags: 1
@@ -738,7 +753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4535457344738672}
   m_Layer: 0
-  m_Name: PieceContainer
+  m_Name: PooledPieces
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1516,6 +1531,7 @@ Transform:
   - {fileID: 4717228723027672}
   - {fileID: 4625110304186662}
   - {fileID: 4901702630508814}
+  - {fileID: 4930710104887528}
   - {fileID: 4535457344738672}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1656,12 +1672,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1613601000793052}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4405562549676932}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4562119928602334
 Transform:
@@ -2053,6 +2069,19 @@ Transform:
   m_Father: {fileID: 4625110304186662}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4930710104887528
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1293686289242226}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4405562549676932}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4949606759480786
 Transform:
   m_ObjectHideFlags: 1
@@ -2122,6 +2151,10 @@ MonoBehaviour:
     y: -10
     width: 10
     height: 20
+  _piecesParent: {fileID: 4930710104887528}
+  _pooledPiecesParent: {fileID: 4535457344738672}
+  _piecePrefab: {fileID: 114106137709636884, guid: dfee03ff192524a1586945b6487a2562,
+    type: 2}
 --- !u!212 &212020831935012540
 SpriteRenderer:
   m_ObjectHideFlags: 1
