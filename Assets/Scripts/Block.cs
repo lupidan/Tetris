@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Piece : MonoBehaviour
+public class Block : MonoBehaviour
 {
     public Color Color
     {
