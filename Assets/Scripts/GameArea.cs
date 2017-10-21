@@ -8,31 +8,31 @@ public class GameArea : MonoBehaviour
     
     [SerializeField] private Rect _playArea = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
 
-    [SerializeField] private Transform _piecesParent;
-    [SerializeField] private Transform _pooledPiecesParent;
-    [SerializeField] private Piece _piecePrefab;
+    [SerializeField] private Transform _blocksParent;
+    [SerializeField] private Transform _pooledBlocksParent;
+    [SerializeField] private Block _blockPrefab;
 
-    private ComponentPool<Piece> _piecePool;
+    private ComponentPool<Block> _blockPool;
 
     public void Awake()
     {
-        this._piecePool = new ComponentPool<Piece>(25,
+        this._blockPool = new ComponentPool<Block>(25,
             () =>
             {
-                Piece piece = Instantiate(_piecePrefab);
-                piece.gameObject.SetActive(false);
-                piece.transform.SetParent(_pooledPiecesParent);
-                return piece;
+                Block block = Instantiate(_blockPrefab);
+                block.gameObject.SetActive(false);
+                block.transform.SetParent(_pooledBlocksParent);
+                return block;
             },
-            (piece) => 
+            (block) => 
             {
-                piece.gameObject.SetActive(true);
-                piece.transform.SetParent(_piecesParent);
+                block.gameObject.SetActive(true);
+                block.transform.SetParent(_blocksParent);
             },
-            (piece) =>
+            (block) =>
             {
-                piece.gameObject.SetActive(false);
-                piece.transform.SetParent(_pooledPiecesParent);
+                block.gameObject.SetActive(false);
+                block.transform.SetParent(_pooledBlocksParent);
             });
     }
 
