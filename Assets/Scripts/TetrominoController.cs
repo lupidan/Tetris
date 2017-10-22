@@ -45,6 +45,9 @@ public class TetrominoController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
             ActiveTetromino.RotateCounterClockwise();
 
+        if (Input.GetKeyDown(KeyCode.Space))
+            PlaceTetrominoOnPlayArea(ActiveTetromino);
+
         if (movement.DidMove)
             AdjustTetrominoMovement(movement);
     }
@@ -76,5 +79,19 @@ public class TetrominoController : MonoBehaviour
                 tetromino.MoveDown();
         }
     }
+
+    private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
+    {
+        for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
+        {
+            Vector3 pieceWorldPositiom = tetromino.ChildBlocks[i].transform.position;
+            Vector3 gameAreaWorlPosition = GameArea.transform.position;
+            Vector3 pieceLocalPosition = pieceWorldPositiom - gameAreaWorlPosition;
+
+            int x = Mathf.FloorToInt(pieceLocalPosition.x);
+            int y = Mathf.FloorToInt(pieceLocalPosition.y);
+            Color color = tetromino.ChildBlocks[i].Color;
+            GameArea.AddBlockAtPosition(x, y, color);
+        }
     }
 }
