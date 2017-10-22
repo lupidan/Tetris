@@ -72,7 +72,15 @@ public class GameArea : MonoBehaviour
         }
     }
 
-    private void AddBlockAtPosition(int x, int y, Color color)
+    public Block BlockAtPosition(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
+            throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
+
+        return _blocks[x, y];
+    }
+
+    public void AddBlockAtPosition(int x, int y, Color color)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
             throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
@@ -81,11 +89,12 @@ public class GameArea : MonoBehaviour
             throw new Exception("A block already exists at (" + x + ", " + y + ").");
 
         Block block = _blockPool.Get();
-        block.transform.localPosition = new Vector3(x + 0.5f, y + 0.5f, 0.0f);;
+        block.transform.localPosition = new Vector3(x + 0.5f, y + 0.5f, 0.0f);
+        block.Color = color;
         _blocks[x, y] = block;
     }
 
-    private void RemoveBlockAtPosition(int x, int y)
+    public void RemoveBlockAtPosition(int x, int y)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
             throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
@@ -107,33 +116,5 @@ public class GameArea : MonoBehaviour
             for (int y = 0; y < _blocks.GetLength(1); ++y)
                 if (_blocks[x, y] != null)
                     RemoveBlockAtPosition(x, y);
-    }
-
-    public void AdjustTetrominoMovement(TetrominoMovement movement)
-    {
-        LimitTetrominoMovementInPlayArea(movement);
-    }
-
-    private void LimitTetrominoMovementInPlayArea(TetrominoMovement movement)
-    {
-        Tetromino tetromino = movement.Tetromino;
-        if (tetromino == null)
-            return;
-        
-        Rect worldPlayArea = WorldPlayArea;
-        for(int i=0; i < tetromino.ChildBlocks.Length; ++i)
-        {
-            while (tetromino.ChildBlocks[i].position.x < worldPlayArea.xMin)
-                tetromino.MoveRight();
-
-            while (tetromino.ChildBlocks[i].position.x > worldPlayArea.xMax)
-                tetromino.MoveLeft();
-
-            while (tetromino.ChildBlocks[i].position.y < worldPlayArea.yMin)
-                tetromino.MoveUp();
-
-            while (tetromino.ChildBlocks[i].position.y > worldPlayArea.yMax)
-                tetromino.MoveDown();
-        }
     }
 }

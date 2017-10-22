@@ -8,44 +8,90 @@ public class TetrominoController : MonoBehaviour
     public GameArea GameArea;
     
     void Update () {
-        if (this.ActiveTetromino == null || this.GameArea == null)
+        if (ActiveTetromino == null || GameArea == null)
             return;
 
         TetrominoMovement movement = new TetrominoMovement()
         {
-            Tetromino = this.ActiveTetromino,
-            PreviousPosition = this.ActiveTetromino.transform.position,
-            PreviousRotation = this.ActiveTetromino.transform.eulerAngles
+            Tetromino = ActiveTetromino,
+            PreviousPosition = ActiveTetromino.transform.position,
+            PreviousRotation = ActiveTetromino.transform.eulerAngles
         };
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
-            this.ActiveTetromino.MoveRight();
+            ActiveTetromino.MoveRight();
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
-            this.ActiveTetromino.MoveLeft();
-
-        if (Input.GetKeyDown(KeyCode.Q))
-            this.ActiveTetromino.MoveUp();
+            ActiveTetromino.MoveLeft();
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
+            ActiveTetromino.MoveUp();
+
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            this.ActiveTetromino.HardDrop();
+            ActiveTetromino.HardDrop();
             movement.MovementInvolvesCommit = true;
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            this.ActiveTetromino.MoveDown();
+            ActiveTetromino.MoveDown();
             movement.MovementInvolvesCommit = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
-            this.ActiveTetromino.RotateClockwise();
+            ActiveTetromino.RotateClockwise();
             
         if (Input.GetKeyDown(KeyCode.X))
-            this.ActiveTetromino.RotateCounterClockwise();
+            ActiveTetromino.RotateCounterClockwise();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            PlaceTetrominoOnPlayArea(ActiveTetromino);
 
         if (movement.DidMove)
-            this.GameArea.AdjustTetrominoMovement(movement);
+            AdjustTetrominoMovement(movement);
+    }
+
+    private void AdjustTetrominoMovement(TetrominoMovement movement)
+    {
+        LimitTetrominoMovementInPlayArea(movement);
+    }
+
+    private void LimitTetrominoMovementInPlayArea(TetrominoMovement movement)
+    {
+        Tetromino tetromino = movement.Tetromino;
+        if (tetromino == null)
+            return;
+        
+        Rect worldPlayArea = this.GameArea.WorldPlayArea;
+        for(int i=0; i < tetromino.ChildBlocks.Length; ++i)
+        {
+            while (tetromino.ChildBlocks[i].transform.position.x < worldPlayArea.xMin)
+                tetromino.MoveRight();
+
+            while (tetromino.ChildBlocks[i].transform.position.x > worldPlayArea.xMax)
+                tetromino.MoveLeft();
+
+            while (tetromino.ChildBlocks[i].transform.position.y < worldPlayArea.yMin)
+                tetromino.MoveUp();
+
+            while (tetromino.ChildBlocks[i].transform.position.y > worldPlayArea.yMax)
+                tetromino.MoveDown();
+        }
+    }
+
+    private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
+    {
+        for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
+        {
+            Vector3 pieceWorldPositiom = tetromino.ChildBlocks[i].transform.position;
+            Vector3 gameAreaWorlPosition = GameArea.transform.position;
+            Vector3 pieceLocalPosition = pieceWorldPositiom - gameAreaWorlPosition;
+
+            int x = Mathf.FloorToInt(pieceLocalPosition.x);
+            int y = Mathf.FloorToInt(pieceLocalPosition.y);
+            Color color = tetromino.ChildBlocks[i].Color;
+            GameArea.AddBlockAtPosition(x, y, color);
+        }
     }
 }

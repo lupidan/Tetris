@@ -8,9 +8,9 @@ public class Tetromino : MonoBehaviour
     private static float HardDropMultiplier = 20.0f;
     private static float RotationAngleInDegrees = 90.0f;
 
-    public Transform[] ChildBlocks { get { return _childBlocks; } }
+    public Block[] ChildBlocks { get { return _childBlocks; } }
 
-    [SerializeField] private Transform[] _childBlocks;
+    [SerializeField] private Block[] _childBlocks;
 
     public void MoveRight()
     {
@@ -62,6 +62,6 @@ public class Tetromino : MonoBehaviour
         this.transform.rotation = Quaternion.Euler(newEulerRotation);
 
         for (int i=0; i < this._childBlocks.Length; ++i)
-            this._childBlocks[i].localEulerAngles = -newEulerRotation;
+            this._childBlocks[i].transform.localEulerAngles = -newEulerRotation;
     }
 }

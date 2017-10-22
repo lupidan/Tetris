@@ -36,8 +36,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4722325730495524}
   - component: {fileID: 212717745954210620}
+  - component: {fileID: 114885551804274836}
   m_Layer: 0
-  m_Name: Piece
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,8 +53,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4661647340765028}
   - component: {fileID: 212131503880585998}
+  - component: {fileID: 114890534534561360}
   m_Layer: 0
-  m_Name: Piece
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,8 +70,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4224480496040514}
   - component: {fileID: 212717095223207864}
+  - component: {fileID: 114427393026909246}
   m_Layer: 0
-  m_Name: Piece
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,8 +87,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4784604535691144}
   - component: {fileID: 212278562846051634}
+  - component: {fileID: 114097424416829398}
   m_Layer: 0
-  m_Name: Piece
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,6 +164,28 @@ Transform:
   m_Father: {fileID: 4261588110579010}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114097424416829398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862132683304306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115090d56f9694f7a861bd7b4e891a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114427393026909246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1797791702676664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115090d56f9694f7a861bd7b4e891a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114614201703280510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -172,10 +198,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _childBlocks:
-  - {fileID: 4661647340765028}
-  - {fileID: 4224480496040514}
-  - {fileID: 4784604535691144}
-  - {fileID: 4722325730495524}
+  - {fileID: 114890534534561360}
+  - {fileID: 114427393026909246}
+  - {fileID: 114097424416829398}
+  - {fileID: 114885551804274836}
+--- !u!114 &114885551804274836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1300676716593734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115090d56f9694f7a861bd7b4e891a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114890534534561360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1650790305981400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115090d56f9694f7a861bd7b4e891a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212131503880585998
 SpriteRenderer:
   m_ObjectHideFlags: 1
