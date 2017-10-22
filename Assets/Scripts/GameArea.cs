@@ -72,6 +72,14 @@ public class GameArea : MonoBehaviour
         }
     }
 
+    public Block BlockAtPosition(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
+            throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
+
+        return _blocks[x, y];
+    }
+
     public void AddBlockAtPosition(int x, int y, Color color)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
