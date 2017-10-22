@@ -72,7 +72,7 @@ public class GameArea : MonoBehaviour
         }
     }
 
-    private void AddBlockAtPosition(int x, int y, Color color)
+    public void AddBlockAtPosition(int x, int y, Color color)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
             throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
@@ -85,7 +85,7 @@ public class GameArea : MonoBehaviour
         _blocks[x, y] = block;
     }
 
-    private void RemoveBlockAtPosition(int x, int y)
+    public void RemoveBlockAtPosition(int x, int y)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
             throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
