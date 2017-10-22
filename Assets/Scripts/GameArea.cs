@@ -46,7 +46,7 @@ public class GameArea : MonoBehaviour
                 block.transform.SetParent(_pooledBlocksParent);
             });
 
-        SetGridSize(10, 5);
+        SetGridSize(10, 20);
     }
 
     public void SetGridSize(int width, int height)
