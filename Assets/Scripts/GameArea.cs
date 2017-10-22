@@ -81,7 +81,8 @@ public class GameArea : MonoBehaviour
             throw new Exception("A block already exists at (" + x + ", " + y + ").");
 
         Block block = _blockPool.Get();
-        block.transform.localPosition = new Vector3(x + 0.5f, y + 0.5f, 0.0f);;
+        block.transform.localPosition = new Vector3(x + 0.5f, y + 0.5f, 0.0f);
+        block.Color = color;
         _blocks[x, y] = block;
     }
 
