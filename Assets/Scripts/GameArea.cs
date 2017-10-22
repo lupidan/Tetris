@@ -108,32 +108,4 @@ public class GameArea : MonoBehaviour
                 if (_blocks[x, y] != null)
                     RemoveBlockAtPosition(x, y);
     }
-
-    public void AdjustTetrominoMovement(TetrominoMovement movement)
-    {
-        LimitTetrominoMovementInPlayArea(movement);
-    }
-
-    private void LimitTetrominoMovementInPlayArea(TetrominoMovement movement)
-    {
-        Tetromino tetromino = movement.Tetromino;
-        if (tetromino == null)
-            return;
-        
-        Rect worldPlayArea = WorldPlayArea;
-        for(int i=0; i < tetromino.ChildBlocks.Length; ++i)
-        {
-            while (tetromino.ChildBlocks[i].position.x < worldPlayArea.xMin)
-                tetromino.MoveRight();
-
-            while (tetromino.ChildBlocks[i].position.x > worldPlayArea.xMax)
-                tetromino.MoveLeft();
-
-            while (tetromino.ChildBlocks[i].position.y < worldPlayArea.yMin)
-                tetromino.MoveUp();
-
-            while (tetromino.ChildBlocks[i].position.y > worldPlayArea.yMax)
-                tetromino.MoveDown();
-        }
-    }
 }
