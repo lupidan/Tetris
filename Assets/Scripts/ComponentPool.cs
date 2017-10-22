@@ -29,7 +29,7 @@ public class ComponentPool<T> where T : MonoBehaviour
         if (_getComponentAction != null)
             _getComponentAction(component);
 
-        return _pooledObjects.Pop();
+        return component;
     }
 
     public void Return(T component)
