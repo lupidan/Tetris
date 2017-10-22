@@ -48,11 +48,11 @@ public class GameArea : MonoBehaviour
 
         SetGridSize(10, 5);
     }
-    
+
     public void SetGridSize(int width, int height)
     {
-        if (width <= 0 || height <= 0)
-            return;
+        if (width <= 4 || height <= 4)
+            throw new Exception("Game area should be larger than 4x4.");
 
         ClearAllBlocks();
 
