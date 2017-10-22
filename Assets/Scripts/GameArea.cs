@@ -57,7 +57,7 @@ public class GameArea : MonoBehaviour
         ClearAllBlocks();
 
         _blocks = new Block[width + 2, height + 2];
-        _localPlayArea = new Rect(1, 1, width, height);
+        _localPlayArea = new Rect(0, 0, width + 2, height + 2);
 
         for (int x = 0; x < _blocks.GetLength(0); ++x)
         {
