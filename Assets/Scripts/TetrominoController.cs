@@ -69,8 +69,7 @@ public class TetrominoController : MonoBehaviour
     private bool TryMoveTetromino(Tetromino tetromino, Vector2 moveVector)
     {
         Vector3 previousPosition = ActiveTetromino.transform.position;
-        Vector3 newPosition = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);
-        ActiveTetromino.transform.position += newPosition;
+        ActiveTetromino.transform.position = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);;
         LimitTetrominoInsidePlayArea(tetromino);
 
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
