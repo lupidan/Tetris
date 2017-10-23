@@ -71,16 +71,16 @@ public class TetrominoController : MonoBehaviour
         Vector3 previousPosition = ActiveTetromino.transform.position;
         ActiveTetromino.transform.position += moveVector;
         LimitTetrominoInsidePlayArea(tetromino);
+
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
         {
             Vector3 pieceLocalPosition = tetromino.ChildBlocks[i].transform.position - GameArea.transform.position;
             int x = Mathf.FloorToInt(pieceLocalPosition.x);
             int y = Mathf.FloorToInt(pieceLocalPosition.y);
-            if (GameArea.BlockAtPosition(x, y) == null)
-                continue;
-
-            ActiveTetromino.transform.position = previousPosition;
-            return false;
+            if (GameArea.BlockAtPosition(x, y) != null)
+            {
+                ActiveTetromino.transform.position = previousPosition;
+                return false;
         }
         return true;
     }
