@@ -57,7 +57,7 @@ public class GameArea : MonoBehaviour
         ClearAllBlocks();
 
         _blocks = new Block[width + 2, height + 2];
-        _localPlayArea = new Rect(1, 1, width, height);
+        _localPlayArea = new Rect(0, 0, width, height);
 
         for (int x = 0; x < _blocks.GetLength(0); ++x)
         {
@@ -75,7 +75,7 @@ public class GameArea : MonoBehaviour
     public Block BlockAtPosition(int x, int y)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
-            throw new Exception("Index (" + x + ", " + y + ") is out of bounds.");
+            return null;
 
         return _blocks[x, y];
     }
