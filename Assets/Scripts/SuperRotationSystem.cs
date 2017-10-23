@@ -50,7 +50,7 @@ public static class SuperRotationSystem
 
 	private static Vector2[] GetTestOffsets(float fromAngleInDegrees, float toAngleInDegrees, Dictionary<string, Vector2[]> data)
 	{
-		string dictionaryKey = GetRotationStateForAngle(from) + "->" + GetRotationStateForAngle(to);
+		string dictionaryKey = GetRotationStateForAngle(fromAngleInDegrees) + "->" + GetRotationStateForAngle(toAngleInDegrees);
 		Vector2[] testPositions;
 		if (data.TryGetValue(dictionaryKey, out testPositions))
 			return testPositions;
