@@ -81,6 +81,7 @@ public class TetrominoController : MonoBehaviour
             {
                 ActiveTetromino.transform.position = previousPosition;
                 return false;
+            }
         }
         return true;
     }
