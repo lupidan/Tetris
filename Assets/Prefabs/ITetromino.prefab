@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3473702272e76457586639144eee05a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _positioningOffset: {x: 0, y: 0, z: 0}
   _childBlocks:
   - {fileID: 114082739840380844}
   - {fileID: 114847948672731254}
