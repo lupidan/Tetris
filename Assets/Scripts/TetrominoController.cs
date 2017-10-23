@@ -12,17 +12,17 @@ public class TetrominoController : MonoBehaviour
             return;
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
-            TryMoveTetromino(ActiveTetromino, new Vector3(1.0f, 0.0f, 0.0f));
+            TryMoveTetromino(ActiveTetromino, new Vector2(1.0f, 0.0f));
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
-            TryMoveTetromino(ActiveTetromino, new Vector3(-1.0f, 0.0f, 0.0f));
+            TryMoveTetromino(ActiveTetromino, new Vector2(-1.0f, 0.0f));
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
-            TryMoveTetromino(ActiveTetromino, new Vector3(0.0f, 1.0f, 0.0f));
+            TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, 1.0f));
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            bool couldMove = TryMoveTetromino(ActiveTetromino, new Vector3(0.0f, -1.0f, 0.0f));
+            bool couldMove = TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f));
             if (!couldMove)
             {
                 PlaceTetrominoOnPlayArea(ActiveTetromino);
@@ -32,7 +32,7 @@ public class TetrominoController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            while(TryMoveTetromino(ActiveTetromino, new Vector3(0.0f, -1.0f, 0.0f)));
+            while(TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f)));
             PlaceTetrominoOnPlayArea(ActiveTetromino);
             ActiveTetromino.transform.position = new Vector3(6.0f, 18.0f, 0.0f);
         }
@@ -66,10 +66,11 @@ public class TetrominoController : MonoBehaviour
         }
     }
 
-    private bool TryMoveTetromino(Tetromino tetromino, Vector3 moveVector)
+    private bool TryMoveTetromino(Tetromino tetromino, Vector2 moveVector)
     {
         Vector3 previousPosition = ActiveTetromino.transform.position;
-        ActiveTetromino.transform.position += moveVector;
+        Vector3 newPosition = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);
+        ActiveTetromino.transform.position += newPosition;
         LimitTetrominoInsidePlayArea(tetromino);
 
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
@@ -95,7 +96,17 @@ public class TetrominoController : MonoBehaviour
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
             tetromino.ChildBlocks[i].transform.rotation = Quaternion.identity;
 
-        return true;
+        Vector2[] testOffsets = SuperRotationSystem.GetTestOffsetsForDefaultTetromino(previousEulerAngles.z, eulerAngles.z);
+        for (int i = 0; i < testOffsets.Length; i++)
+        {
+            if (TryMoveTetromino(tetromino, testOffsets[i]))
+                return true;
+        }
+
+        ActiveTetromino.transform.rotation = Quaternion.Euler(previousEulerAngles);
+        for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
+            tetromino.ChildBlocks[i].transform.rotation = Quaternion.identity;
+        return false;
     }
 
     private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
