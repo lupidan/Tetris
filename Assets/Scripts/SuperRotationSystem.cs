@@ -6,28 +6,25 @@ public static class SuperRotationSystem
 {
 	// Super Rotation System defined here
 	// https://tetris.wiki/SRS
-	private static readonly Dictionary<string, Vector2[]> _srsDefaultWallKickData = new Dictionary<string, Vector2[]>
+	private static readonly Dictionary<string, Vector2[]> _srsWallKickData = new Dictionary<string, Vector2[]>
 	{
-		{"0->R", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1,  1), new Vector2(0, -2), new Vector2(-1, -2) } },
-		{"R->0", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1, -1), new Vector2(0,  2), new Vector2( 1,  2) } },
-		{"R->2", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1, -1), new Vector2(0,  2), new Vector2( 1,  2) } },
-		{"2->R", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1,  1), new Vector2(0, -2), new Vector2(-1, -2) } },
-		{"2->L", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1,  1), new Vector2(0, -2), new Vector2( 1, -2) } },
-		{"L->2", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1, -1), new Vector2(0,  2), new Vector2(-1,  2) } },
-		{"L->0", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1, -1), new Vector2(0,  2), new Vector2(-1,  2) } },
-		{"0->L", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1,  1), new Vector2(0, -2), new Vector2( 1, -2) } }
-	};
+		{"[D]0->R", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1,  1), new Vector2(0, -2), new Vector2(-1, -2) } },
+		{"[D]R->0", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1, -1), new Vector2(0,  2), new Vector2( 1,  2) } },
+		{"[D]R->2", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1, -1), new Vector2(0,  2), new Vector2( 1,  2) } },
+		{"[D]2->R", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1,  1), new Vector2(0, -2), new Vector2(-1, -2) } },
+		{"[D]2->L", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1,  1), new Vector2(0, -2), new Vector2( 1, -2) } },
+		{"[D]L->2", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1, -1), new Vector2(0,  2), new Vector2(-1,  2) } },
+		{"[D]L->0", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2(-1, -1), new Vector2(0,  2), new Vector2(-1,  2) } },
+		{"[D]0->L", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2( 1,  1), new Vector2(0, -2), new Vector2( 1, -2) } },
 
-	private static readonly Dictionary<string, Vector2[]> _srsITetrominoWallKickData = new Dictionary<string, Vector2[]>
-	{
-		{"0->R", new Vector2[]{ new Vector2(0, 0), new Vector2(-2, 0), new Vector2( 1, 0), new Vector2(-2, -1), new Vector2( 1,  2) } },
-		{"R->0", new Vector2[]{ new Vector2(0, 0), new Vector2( 2, 0), new Vector2(-1, 0), new Vector2( 2,  1), new Vector2(-1, -2) } },
-		{"R->2", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2( 2, 0), new Vector2(-1,  2), new Vector2( 2, -1) } },
-		{"2->R", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2(-2, 0), new Vector2( 1, -2), new Vector2(-2,  1) } },
-		{"2->L", new Vector2[]{ new Vector2(0, 0), new Vector2( 2, 0), new Vector2(-1, 0), new Vector2( 2,  1), new Vector2(-1, -2) } },
-		{"L->2", new Vector2[]{ new Vector2(0, 0), new Vector2(-2, 0), new Vector2( 1, 0), new Vector2(-2, -1), new Vector2( 1,  2) } },
-		{"L->0", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2(-2, 0), new Vector2( 1, -2), new Vector2(-2,  1) } },
-		{"0->L", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2( 2, 0), new Vector2(-1,  2), new Vector2( 2, -1) } }
+		{"[I]0->R", new Vector2[]{ new Vector2(0, 0), new Vector2(-2, 0), new Vector2( 1, 0), new Vector2(-2, -1), new Vector2( 1,  2) } },
+		{"[I]R->0", new Vector2[]{ new Vector2(0, 0), new Vector2( 2, 0), new Vector2(-1, 0), new Vector2( 2,  1), new Vector2(-1, -2) } },
+		{"[I]R->2", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2( 2, 0), new Vector2(-1,  2), new Vector2( 2, -1) } },
+		{"[I]2->R", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2(-2, 0), new Vector2( 1, -2), new Vector2(-2,  1) } },
+		{"[I]2->L", new Vector2[]{ new Vector2(0, 0), new Vector2( 2, 0), new Vector2(-1, 0), new Vector2( 2,  1), new Vector2(-1, -2) } },
+		{"[I]L->2", new Vector2[]{ new Vector2(0, 0), new Vector2(-2, 0), new Vector2( 1, 0), new Vector2(-2, -1), new Vector2( 1,  2) } },
+		{"[I]L->0", new Vector2[]{ new Vector2(0, 0), new Vector2( 1, 0), new Vector2(-2, 0), new Vector2( 1, -2), new Vector2(-2,  1) } },
+		{"[I]0->L", new Vector2[]{ new Vector2(0, 0), new Vector2(-1, 0), new Vector2( 2, 0), new Vector2(-1,  2), new Vector2( 2, -1) } }
 	};
 
 	private static string GetRotationStateForAngle(float angleInDegrees)
@@ -48,22 +45,24 @@ public static class SuperRotationSystem
 		return "?";
 	}
 
-	private static Vector2[] GetTestOffsets(float fromAngleInDegrees, float toAngleInDegrees, Dictionary<string, Vector2[]> data)
+	private static string GetPrefixForWallKickType(Tetromino.WallKickType wallKickType)
 	{
-		string dictionaryKey = GetRotationStateForAngle(fromAngleInDegrees) + "->" + GetRotationStateForAngle(toAngleInDegrees);
+		if (wallKickType == Tetromino.WallKickType.ITetrominoRotation)
+			return "[I]";
+		return "[D]";
+	}
+
+	public static Vector2[] GetTestOffsets(Tetromino.WallKickType wallKickType, float fromAngleInDegrees, float toAngleInDegrees)
+	{
+		string dictionaryKey =
+			GetPrefixForWallKickType(wallKickType) + 
+			GetRotationStateForAngle(fromAngleInDegrees) +
+			"->" +
+			GetRotationStateForAngle(toAngleInDegrees);
+			
 		Vector2[] testPositions;
-		if (data.TryGetValue(dictionaryKey, out testPositions))
+		if (_srsWallKickData.TryGetValue(dictionaryKey, out testPositions))
 			return testPositions;
 		return new Vector2[] { Vector2.zero };
-	}
-
-	public static Vector2[] GetTestOffsetsForDefaultTetromino(float fromAngleInDegrees, float toAngleInDegrees)
-	{
-		return GetTestOffsets(fromAngleInDegrees, toAngleInDegrees, _srsDefaultWallKickData);
-	}
-
-	public static Vector2[] GetTestOffsetsForITetromino(float fromAngleInDegrees, float toAngleInDegrees)
-	{
-		return GetTestOffsets(fromAngleInDegrees, toAngleInDegrees, _srsITetrominoWallKickData);
 	}
 }

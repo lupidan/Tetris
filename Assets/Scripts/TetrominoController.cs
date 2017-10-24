@@ -75,7 +75,7 @@ public class TetrominoController : MonoBehaviour
         Vector3 newEulerAngles = previousEulerAngles + eulerAngles;
         ActiveTetromino.transform.rotation = Quaternion.Euler(newEulerAngles);
 
-        Vector2[] testOffsets = SuperRotationSystem.GetTestOffsetsForDefaultTetromino(previousEulerAngles.z, newEulerAngles.z);
+        Vector2[] testOffsets = SuperRotationSystem.GetTestOffsets(tetromino.WallKickTypee, previousEulerAngles.z, newEulerAngles.z);
         for (int i = 0; i < testOffsets.Length; i++)
         {
             if (TryMoveTetromino(tetromino, testOffsets[i]))
