@@ -4,51 +4,79 @@ using UnityEngine;
 
 public class TetrominoController : MonoBehaviour
 {
+    public interface Input
+    {
+        bool MoveLeft { get; }
+        bool MoveRight { get; }
+        bool MoveDown { get; }
+        bool RotateClockwise { get; }
+        bool RotateCounterClockwise { get; }
+        bool HardDrop { get; }
+    }
+
+    [Header("Config")]
+    public float MoveDownInterval;
+
+    [Header("Components")]
     public Tetromino ActiveTetromino;
     public GameArea GameArea;
+
+    [Header("Prefabs")]
+    public Tetromino[] TetrominoPrefabs;
+
+    private float _autoMoveDownCounter = 0.0f;
+    private Input _input;
     
+    #region MonoBehaviour
+
+    void Start()
+    {
+        _input = new KeyboardInput();
+        CreateRandomTetromino();
+    }
+
     void Update () {
         if (ActiveTetromino == null || GameArea == null)
             return;
+    
+        _autoMoveDownCounter -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            TryMoveTetromino(ActiveTetromino, new Vector2(1.0f, 0.0f));
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (_input.MoveLeft)
             TryMoveTetromino(ActiveTetromino, new Vector2(-1.0f, 0.0f));
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, 1.0f));
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (_input.MoveRight)
+            TryMoveTetromino(ActiveTetromino, new Vector2(1.0f, 0.0f));
+            
+        if (_input.MoveDown || _autoMoveDownCounter <= 0.0f)
         {
+            _autoMoveDownCounter = MoveDownInterval;
             bool couldMove = TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f));
             if (!couldMove)
-            {
                 PlaceTetrominoOnPlayArea(ActiveTetromino);
-                ActiveTetromino.transform.position = new Vector3(6.0f, 18.0f, 0.0f) + ActiveTetromino.PositioningOffset;
-            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (_input.HardDrop)
         {
             while(TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f)));
             PlaceTetrominoOnPlayArea(ActiveTetromino);
-            ActiveTetromino.transform.position = new Vector3(6.0f, 18.0f, 0.0f) + ActiveTetromino.PositioningOffset;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (_input.RotateClockwise)
         {
             TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, -90.0f));
             AdjustTetriminoChildBlocksRotation(ActiveTetromino);
         }
-            
-        if (Input.GetKeyDown(KeyCode.X))
+
+        if (_input.RotateCounterClockwise)
         {
             TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, 90.0f));
             AdjustTetriminoChildBlocksRotation(ActiveTetromino);
         }
     }
+
+    #endregion
+
+    #region Private methods
 
     private bool TryMoveTetromino(Tetromino tetromino, Vector2 moveVector)
     {
@@ -94,6 +122,7 @@ public class TetrominoController : MonoBehaviour
 
     private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
     {
+        HashSet<int> rowsToCheck = new HashSet<int>();
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
         {
             Vector3 pieceLocalPosition = tetromino.ChildBlocks[i].transform.position - GameArea.transform.position;
@@ -102,6 +131,38 @@ public class TetrominoController : MonoBehaviour
             int y = Mathf.FloorToInt(pieceLocalPosition.y);
             Color color = tetromino.ChildBlocks[i].Color;
             GameArea.AddBlockAtPosition(x, y, color);
+            rowsToCheck.Add(y);
+        }
+
+        DeleteCompletedRows(rowsToCheck);
+        GameArea.ApplyGravity();
+
+        Destroy(tetromino.gameObject);
+        CreateRandomTetromino();
+    }
+
+    private void DeleteCompletedRows(HashSet<int> rowsToCheck)
+    {
+        foreach(int y in rowsToCheck)
+        {
+            if (GameArea.IsRowComplete(y))
+            {
+                GameArea.ClearRow(y);
+            }
         }
     }
+
+    private void CreateRandomTetromino()
+    {
+        Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
+        Vector3 tetrominoPosition = Vector3.zero;
+        tetrominoPosition.x = GameArea.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
+        tetrominoPosition.y = GameArea.WorldPlayArea.yMax - 4.0f + instantiatedTetromino.PositioningOffset.y;
+        instantiatedTetromino.transform.position = tetrominoPosition;
+
+        ActiveTetromino = instantiatedTetromino;
+        _autoMoveDownCounter = MoveDownInterval;
+    }
+
+    #endregion
 }

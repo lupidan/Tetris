@@ -80,6 +80,65 @@ public class GameArea : MonoBehaviour
         return _blocks[x, y];
     }
 
+    public bool IsRowComplete(int y)
+    {
+        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        for (int x = initialColumn; x < endingColumn; ++x)
+            if (BlockAtPosition(x, y) == null)
+                return false;
+        return true;
+    }
+
+    public bool IsRowEmpty(int y)
+    {
+        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        for (int x = initialColumn; x < endingColumn; ++x)
+            if (BlockAtPosition(x, y) != null)
+                return false;
+        return true;
+    }
+
+    public void ApplyGravity()
+    {
+        int numberOfRowsToLower = 0;
+        int initialRow = Mathf.RoundToInt(_localPlayArea.yMin);
+        int endingRow = Mathf.RoundToInt(_localPlayArea.yMax);
+        for (int y = initialRow; y < endingRow; ++y)
+        {
+            if (IsRowEmpty(y))
+                numberOfRowsToLower++;
+            else if (numberOfRowsToLower > 0)
+                MoveRowDown(y, numberOfRowsToLower);
+        }
+    }
+
+    public void MoveRowDown(int y, int numberOfRowsDowns)
+    {
+        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        int destinationY = y - numberOfRowsDowns;
+        for (int x = initialColumn; x < endingColumn; ++x)
+        {
+            Block block = _blocks[x, y];
+            if (block != null)
+            {
+                _blocks[x, y] = null;
+                _blocks[x, destinationY] = block;
+                block.transform.localPosition = new Vector3(x + 0.5f, destinationY + 0.5f, 0.0f);
+            }
+        }
+    }
+
+    public void ClearRow(int y)
+    {
+        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        for (int x = initialColumn; x < endingColumn; ++x)
+            RemoveBlockAtPosition(x, y);
+    }
+
     public void AddBlockAtPosition(int x, int y, Color color)
     {
         if (x < 0 || y < 0 || x >= _blocks.GetLength(0) || y >= _blocks.GetLength(1))
