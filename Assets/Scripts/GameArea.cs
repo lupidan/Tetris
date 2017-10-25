@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -126,7 +127,7 @@ public class GameArea : MonoBehaviour
             {
                 _blocks[x, y] = null;
                 _blocks[x, destinationY] = block;
-                block.transform.localPosition = new Vector3(x + 0.5f, destinationY + 0.5f, 0.0f);
+                block.transform.DOLocalMoveY(destinationY + 0.5f, 0.5f).SetEase(Ease.OutBounce);
             }
         }
     }
