@@ -122,6 +122,7 @@ public class TetrominoController : MonoBehaviour
 
     private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
     {
+        HashSet<int> rowsToCheck = new HashSet<int>();
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
         {
             Vector3 pieceLocalPosition = tetromino.ChildBlocks[i].transform.position - GameArea.transform.position;
@@ -130,10 +131,25 @@ public class TetrominoController : MonoBehaviour
             int y = Mathf.FloorToInt(pieceLocalPosition.y);
             Color color = tetromino.ChildBlocks[i].Color;
             GameArea.AddBlockAtPosition(x, y, color);
+            rowsToCheck.Add(y);
         }
+
+        DeleteCompletedRows(rowsToCheck);
+        GameArea.ApplyGravity();
 
         Destroy(tetromino.gameObject);
         CreateRandomTetromino();
+    }
+
+    private void DeleteCompletedRows(HashSet<int> rowsToCheck)
+    {
+        foreach(int y in rowsToCheck)
+        {
+            if (GameArea.IsRowComplete(y))
+            {
+                GameArea.ClearRow(y);
+            }
+        }
     }
 
     private void CreateRandomTetromino()
