@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.006896496, b: 1, a: 1}
+  m_Color: {r: 0.33088237, g: 0.33549693, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -412,9 +412,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameTitleLabel: {fileID: 114615527237059400}
-  _gridSizeProblemsLabel: {fileID: 114831100781119710}
-  _gridWidthInputField: {fileID: 114091924857224050}
-  _gridHeightInputField: {fileID: 114745635215008808}
+  _problemsLabel: {fileID: 114831100781119710}
+  _widthInputField: {fileID: 114091924857224050}
+  _heightInputField: {fileID: 114745635215008808}
 --- !u!114 &114285310350009574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1157,8 +1157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 2.5}
+  m_SizeDelta: {x: 0, y: -5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224890876740639950
 RectTransform:
