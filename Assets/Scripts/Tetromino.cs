@@ -17,4 +17,10 @@ public class Tetromino : MonoBehaviour
     [SerializeField] private Vector3 _positioningOffset;
     [SerializeField] private WallKickType _wallKickType;
     [SerializeField] private Block[] _childBlocks;
+
+    public void AdjustTetrominoChildBlocksRotation()
+    {
+        for (int i = 0; i < ChildBlocks.Length; i++)
+            ChildBlocks[i].transform.rotation = Quaternion.identity;
+    }
 }

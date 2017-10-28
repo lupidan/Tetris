@@ -1,5 +1,5 @@
 ﻿
-public interface IGameController
+public interface GameController
 {
 	void StartGame(int width, int height);
 	void RestartGame();

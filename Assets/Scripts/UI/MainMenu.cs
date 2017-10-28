@@ -23,7 +23,7 @@ public class MainMenu : MonoBehaviour
 	private Vector2 _widthInputFieldOriginalAnchorPos;
 	private Vector2 _heightInputFieldOriginalAnchorPos;
 
-	private IGameController gameController;
+	private GameController _gameController;
 
 	#region MonoBehaviour
 
@@ -56,9 +56,9 @@ public class MainMenu : MonoBehaviour
 
 	#region Public methods
 
-	public void Initialize(IGameController gameController)
+	public void Initialize(GameController gameController)
 	{
-		this.gameController = gameController;
+		_gameController = gameController;
 	}
 
 	#endregion
@@ -137,7 +137,7 @@ public class MainMenu : MonoBehaviour
 		}
 		else
 		{
-			gameController.StartGame(width, height);
+			_gameController.StartGame(width, height);
 		}
 	}
 

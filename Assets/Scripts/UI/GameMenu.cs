@@ -6,7 +6,7 @@ public class GameMenu : MonoBehaviour
 	[SerializeField] private Text _scoreLabel;
 	[SerializeField] private Text _highscoreLabel;
 
-	private IGameController _gameController;
+	private GameController _gameController;
 	private ScoreController _scoreController;
 
 	#region MonoBehaviour
@@ -33,7 +33,7 @@ public class GameMenu : MonoBehaviour
 
 	#region Public methods
 
-	public void Initialize(IGameController gameController, ScoreController scoreController)
+	public void Initialize(GameController gameController, ScoreController scoreController)
 	{
 		this._gameController = gameController;
 		this._scoreController = scoreController;

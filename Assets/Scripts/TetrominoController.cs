@@ -9,7 +9,7 @@ public class TetrominoController : MonoBehaviour
 
     [Header("Components")]
     public Tetromino ActiveTetromino;
-    public GameArea GameArea;
+    
 
     [Header("Prefabs")]
     public Tetromino[] TetrominoPrefabs;
@@ -17,6 +17,7 @@ public class TetrominoController : MonoBehaviour
     private float _autoMoveDownCounter = 0.0f;
 
     private GameInput _gameInput;
+    public GamePlayfield _gamePlayfield;
     private ScoreController _scoreController;
     
     #region MonoBehaviour
@@ -26,8 +27,9 @@ public class TetrominoController : MonoBehaviour
         CreateRandomTetromino();
     }
 
-    void Update () {
-        if (ActiveTetromino == null || GameArea == null)
+    void Update ()
+    {
+        if (ActiveTetromino == null)
             return;
     
         _autoMoveDownCounter -= Time.deltaTime;
@@ -55,21 +57,22 @@ public class TetrominoController : MonoBehaviour
         if (_gameInput.RotateClockwise)
         {
             TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, -90.0f));
-            AdjustTetriminoChildBlocksRotation(ActiveTetromino);
+            ActiveTetromino.AdjustTetrominoChildBlocksRotation();
         }
 
         if (_gameInput.RotateCounterClockwise)
         {
             TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, 90.0f));
-            AdjustTetriminoChildBlocksRotation(ActiveTetromino);
+            ActiveTetromino.AdjustTetrominoChildBlocksRotation();
         }
     }
 
     #endregion
 
     #region Public methods
-    public void Initialize(GameInput gameInput, ScoreController scoreController)
+    public void Initialize(GamePlayfield gamePlayfield, GameInput gameInput, ScoreController scoreController)
     {
+        _gamePlayfield = gamePlayfield;
         _gameInput = gameInput;
         _scoreController = scoreController;
     }
@@ -85,9 +88,11 @@ public class TetrominoController : MonoBehaviour
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
         {
             Vector3 pieceLocalPosition = tetromino.ChildBlocks[i].transform.position - GameArea.transform.position;
-            int x = Mathf.FloorToInt(pieceLocalPosition.x);
-            int y = Mathf.FloorToInt(pieceLocalPosition.y);
-            if (GameArea.BlockAtPosition(x, y) != null)
+            var position = new GamePlayfieldPosition(
+                Mathf.FloorToInt(pieceLocalPosition.x),
+                Mathf.FloorToInt(pieceLocalPosition.y));
+
+            if (_gamePlayfield.BlockAtPosition(position) != null)
             {
                 ActiveTetromino.transform.position = previousPosition;
                 return false;
@@ -113,12 +118,6 @@ public class TetrominoController : MonoBehaviour
         return false;
     }
 
-    private void AdjustTetriminoChildBlocksRotation(Tetromino tetromino)
-    {
-        for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
-            tetromino.ChildBlocks[i].transform.rotation = Quaternion.identity;
-    }
-
     private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
     {
         HashSet<int> rowsToCheck = new HashSet<int>();
@@ -129,27 +128,17 @@ public class TetrominoController : MonoBehaviour
             int x = Mathf.FloorToInt(pieceLocalPosition.x);
             int y = Mathf.FloorToInt(pieceLocalPosition.y);
             Color color = tetromino.ChildBlocks[i].Color;
-            GameArea.AddBlockAtPosition(x, y, color);
+
+            _gamePlayfield.AddBlockAtPosition(new GamePlayfieldPosition(x, y), color);
             rowsToCheck.Add(y);
         }
 
-        DeleteCompletedRows(rowsToCheck);
+        HashSet<int> deletedRows = DeleteCompletedRows(rowsToCheck);
         _scoreController.UpdateScore(rowsToCheck.ToArray(), tetromino);
-        GameArea.ApplyGravity();
+        _gamePlayfield.ApplyGravity(0, -1);
 
         Destroy(tetromino.gameObject);
         CreateRandomTetromino();
-    }
-
-    private void DeleteCompletedRows(HashSet<int> rowsToCheck)
-    {
-        foreach(int y in rowsToCheck)
-        {
-            if (GameArea.IsRowComplete(y))
-            {
-                GameArea.ClearRow(y);
-            }
-        }
     }
 
     private void CreateRandomTetromino()
