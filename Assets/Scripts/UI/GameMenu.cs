@@ -6,7 +6,8 @@ public class GameMenu : MonoBehaviour
 	[SerializeField] private Text _scoreLabel;
 	[SerializeField] private Text _highscoreLabel;
 
-	private IGameController gameController;
+	private IGameController _gameController;
+	private ScoreController _scoreController;
 
 	#region MonoBehaviour
 
@@ -16,13 +17,26 @@ public class GameMenu : MonoBehaviour
 		SetDisplayedHighscore(1000);
 	}
 
+	private void Start()
+	{
+		_scoreController.OnScoreUpdate += SetDisplayedScore;
+		_scoreController.OnHighscoreUpdate += SetDisplayedHighscore;
+	}
+
+	private void OnDestroy()
+	{
+		_scoreController.OnScoreUpdate -= SetDisplayedScore;
+		_scoreController.OnHighscoreUpdate -= SetDisplayedHighscore;
+	}
+
 	#endregion
 
 	#region Public methods
 
-	public void Initialize(IGameController gameController)
+	public void Initialize(IGameController gameController, ScoreController scoreController)
 	{
-		this.gameController = gameController;
+		this._gameController = gameController;
+		this._scoreController = scoreController;
 	}
 
 	public void SetDisplayedScore(long score)
@@ -41,7 +55,7 @@ public class GameMenu : MonoBehaviour
 
 	public void RestartButtonWasSelected()
 	{
-		gameController.RestartGame();
+		_gameController.RestartGame();
 	}
 
 	#endregion
