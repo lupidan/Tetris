@@ -457,11 +457,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 224024677370618772, guid: 9c04368b3f85747ddbaca13d60150e11,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1015449666480592, guid: 9c04368b3f85747ddbaca13d60150e11, type: 2}
       propertyPath: m_IsActive
       value: 0
