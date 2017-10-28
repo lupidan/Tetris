@@ -411,10 +411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f276db7fa067e4637969a290a3e5f868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameTitleLabel: {fileID: 114615527237059400}
-  GridSizeProblemsLabel: {fileID: 114831100781119710}
-  GridWidthInputField: {fileID: 114091924857224050}
-  GridHeightInputField: {fileID: 114745635215008808}
+  _gameTitleLabel: {fileID: 114615527237059400}
+  _gridSizeProblemsLabel: {fileID: 114831100781119710}
+  _gridWidthInputField: {fileID: 114091924857224050}
+  _gridHeightInputField: {fileID: 114745635215008808}
 --- !u!114 &114285310350009574
 MonoBehaviour:
   m_ObjectHideFlags: 1

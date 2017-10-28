@@ -11,31 +11,59 @@ public class MainMenu : MonoBehaviour
 	private const int DefaultHeight = 20;
 	private const int MaxHeight = 200;
 
-	[SerializeField] private Text GameTitleLabel;
-	[SerializeField] private Text GridSizeProblemsLabel;
-	[SerializeField] private InputField GridWidthInputField;
-	[SerializeField] private InputField GridHeightInputField;
+	[SerializeField] private Text _gameTitleLabel;
+	[SerializeField] private Text _problemsLabel;
+	[SerializeField] private InputField _widthInputField;
+	[SerializeField] private InputField _heightInputField;
+
+	private RectTransform _widthInputFieldRectTransform;
+	private RectTransform _heightInputFieldRectTransform;
+
+	private Vector2 _gameTitleLabelOriginalAnchorPos;
+	private Vector2 _widthInputFieldOriginalAnchorPos;
+	private Vector2 _heightInputFieldOriginalAnchorPos;
+
+	#region MonoBehaviour
+
+	private void Start()
+	{
+		_gameTitleLabelOriginalAnchorPos = _gameTitleLabel.rectTransform.anchoredPosition;
+
+		_widthInputFieldRectTransform = _widthInputField.transform as RectTransform;
+		_widthInputFieldOriginalAnchorPos = _widthInputFieldRectTransform.anchoredPosition;
+
+		_heightInputFieldRectTransform = _heightInputField.transform as RectTransform;
+		_heightInputFieldOriginalAnchorPos = _heightInputFieldRectTransform.anchoredPosition;
+
+		_problemsLabel.text = "";
+		_widthInputField.text = DefaultWidth.ToString();
+		_heightInputField.text = DefaultHeight.ToString();
+	}
+
+	#endregion
+
+	#region Button Actions
 
 	public void StartButtonWasSelected()
 	{
 		bool shakeWidthInputField = false;
 		bool shakeHeightInputField = false;
 		string gridConfigError = "";
+
 		int width = DefaultWidth;
-		if (!int.TryParse(GridWidthInputField.text, out width))
+		if (!int.TryParse(_widthInputField.text, out width))
 		{
 			gridConfigError += "Please input a correct Width.\n";
 			shakeWidthInputField = true;
 		}
 
 		int height = DefaultHeight;
-		if (!int.TryParse(GridHeightInputField.text, out height))
+		if (!int.TryParse(_heightInputField.text, out height))
 		{
 			gridConfigError += "Please input a correct Height.\n";
 			shakeHeightInputField = true;
 		}
 			
-		
 		if (width > height)
 		{
 			gridConfigError += "Width can't be greater than height.\n";
@@ -69,18 +97,29 @@ public class MainMenu : MonoBehaviour
 			shakeHeightInputField = true;
 		}		
 
-		GridSizeProblemsLabel.text = gridConfigError;
+		_problemsLabel.text = gridConfigError;
 		if (gridConfigError.Length != 0)
 		{
 			if (shakeWidthInputField)
-				GridWidthInputField.transform.DOShakePosition(0.5f, 10.0f, 100, 90, false);
-
+			{
+				_widthInputFieldRectTransform.DOKill();
+				_widthInputFieldRectTransform.anchoredPosition = _widthInputFieldOriginalAnchorPos;
+				_widthInputFieldRectTransform.DOShakeAnchorPos(0.5f, 10.0f, vibrato: 100, fadeOut: false);
+			}
+				
 			if (shakeHeightInputField)
-				GridHeightInputField.transform.DOShakePosition(0.5f, 10.0f, 100, 90, false);
+			{
+				_heightInputFieldRectTransform.DOKill();
+				_heightInputFieldRectTransform.anchoredPosition = _heightInputFieldOriginalAnchorPos;
+				_heightInputFieldRectTransform.DOShakeAnchorPos(0.5f, 10.0f, vibrato: 100, fadeOut: false);
+			}
 		}
 		else
 		{
 			//DO START
 		}
 	}
+
+	#endregion
+
 }
