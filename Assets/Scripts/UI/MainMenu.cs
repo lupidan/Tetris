@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
 
 	#region MonoBehaviour
 
-	private void Start()
+	private void Awake()
 	{
 		_gameTitleLabelOriginalAnchorPos = _gameTitleLabel.rectTransform.anchoredPosition;
 
@@ -38,6 +38,16 @@ public class MainMenu : MonoBehaviour
 		_problemsLabel.text = "";
 		_widthInputField.text = DefaultWidth.ToString();
 		_heightInputField.text = DefaultHeight.ToString();
+	}
+
+	private void OnEnable()
+	{
+		_gameTitleLabel.rectTransform.DOKill();
+		_gameTitleLabel.rectTransform.anchoredPosition = _gameTitleLabelOriginalAnchorPos;
+
+		_gameTitleLabel.rectTransform.DOAnchorPosY(_gameTitleLabelOriginalAnchorPos.y - 30.0f, 1.0f)
+			.SetLoops(-1, LoopType.Yoyo)
+			.SetEase(Ease.InOutQuad);
 	}
 
 	#endregion
@@ -104,14 +114,14 @@ public class MainMenu : MonoBehaviour
 			{
 				_widthInputFieldRectTransform.DOKill();
 				_widthInputFieldRectTransform.anchoredPosition = _widthInputFieldOriginalAnchorPos;
-				_widthInputFieldRectTransform.DOShakeAnchorPos(0.5f, 10.0f, vibrato: 100, fadeOut: false);
+				_widthInputFieldRectTransform.DOShakeAnchorPos(0.2f, 5.0f, vibrato: 100, fadeOut: false);
 			}
 				
 			if (shakeHeightInputField)
 			{
 				_heightInputFieldRectTransform.DOKill();
 				_heightInputFieldRectTransform.anchoredPosition = _heightInputFieldOriginalAnchorPos;
-				_heightInputFieldRectTransform.DOShakeAnchorPos(0.5f, 10.0f, vibrato: 100, fadeOut: false);
+				_heightInputFieldRectTransform.DOShakeAnchorPos(0.2f, 5.0f, vibrato: 100, fadeOut: false);
 			}
 		}
 		else
