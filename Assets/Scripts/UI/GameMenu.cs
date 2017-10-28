@@ -6,6 +6,8 @@ public class GameMenu : MonoBehaviour
 	[SerializeField] private Text _scoreLabel;
 	[SerializeField] private Text _highscoreLabel;
 
+	private IGameController gameController;
+
 	#region MonoBehaviour
 
 	private void OnEnable()
@@ -17,6 +19,11 @@ public class GameMenu : MonoBehaviour
 	#endregion
 
 	#region Public methods
+
+	public void Initialize(IGameController gameController)
+	{
+		this.gameController = gameController;
+	}
 
 	public void SetDisplayedScore(long score)
 	{
@@ -34,7 +41,7 @@ public class GameMenu : MonoBehaviour
 
 	public void RestartButtonWasSelected()
 	{
-		// DO STUFF
+		gameController.RestartGame();
 	}
 
 	#endregion

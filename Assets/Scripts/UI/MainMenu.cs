@@ -23,6 +23,8 @@ public class MainMenu : MonoBehaviour
 	private Vector2 _widthInputFieldOriginalAnchorPos;
 	private Vector2 _heightInputFieldOriginalAnchorPos;
 
+	private IGameController gameController;
+
 	#region MonoBehaviour
 
 	private void Awake()
@@ -48,6 +50,15 @@ public class MainMenu : MonoBehaviour
 		_gameTitleLabel.rectTransform.DOAnchorPosY(_gameTitleLabelOriginalAnchorPos.y - 30.0f, 1.0f)
 			.SetLoops(-1, LoopType.Yoyo)
 			.SetEase(Ease.InOutQuad);
+	}
+
+	#endregion
+
+	#region Public methods
+
+	public void Initialize(IGameController gameController)
+	{
+		this.gameController = gameController;
 	}
 
 	#endregion
@@ -126,7 +137,7 @@ public class MainMenu : MonoBehaviour
 		}
 		else
 		{
-			//DO START
+			gameController.StartGame(width, height);
 		}
 	}
 
