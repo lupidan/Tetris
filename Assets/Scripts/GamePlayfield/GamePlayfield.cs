@@ -3,6 +3,7 @@
 public interface GamePlayfield
 {
 	void SetGridSize(int width, int height);
+	GamePlayfieldPosition PositionForWorldCoordinates(Vector3 worldCoordinates);
 	Block BlockAtPosition(GamePlayfieldPosition position);
 	void AddBlockAtPosition(GamePlayfieldPosition position, Color color);
 	void RemoveBlockAtPosition(GamePlayfieldPosition position);

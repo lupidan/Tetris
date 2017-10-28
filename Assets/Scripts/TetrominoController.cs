@@ -87,11 +87,8 @@ public class TetrominoController : MonoBehaviour
 
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
         {
-            Vector3 pieceLocalPosition = tetromino.ChildBlocks[i].transform.position - GameArea.transform.position;
-            var position = new GamePlayfieldPosition(
-                Mathf.FloorToInt(pieceLocalPosition.x),
-                Mathf.FloorToInt(pieceLocalPosition.y));
-
+            Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
+            GamePlayfieldPosition position = _gamePlayfield.PositionForWorldCoordinates(blockWorldPosition);
             if (_gamePlayfield.BlockAtPosition(position) != null)
             {
                 ActiveTetromino.transform.position = previousPosition;
@@ -120,22 +117,21 @@ public class TetrominoController : MonoBehaviour
 
     private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
     {
-        HashSet<int> rowsToCheck = new HashSet<int>();
+        HashSet<int> rowsToCheckSet = new HashSet<int>();
         for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
         {
-            Vector3 pieceLocalPosition = tetromino.ChildBlocks[i].transform.position - GameArea.transform.position;
-
-            int x = Mathf.FloorToInt(pieceLocalPosition.x);
-            int y = Mathf.FloorToInt(pieceLocalPosition.y);
+            Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
+            GamePlayfieldPosition position = _gamePlayfield.PositionForWorldCoordinates(blockWorldPosition);
             Color color = tetromino.ChildBlocks[i].Color;
 
-            _gamePlayfield.AddBlockAtPosition(new GamePlayfieldPosition(x, y), color);
-            rowsToCheck.Add(y);
+            _gamePlayfield.AddBlockAtPosition(position, color);
+            rowsToCheckSet.Add(position.y);
         }
 
-        HashSet<int> deletedRows = DeleteCompletedRows(rowsToCheck);
-        _scoreController.UpdateScore(rowsToCheck.ToArray(), tetromino);
-        _gamePlayfield.ApplyGravity(0, -1);
+        int[] rowsToCheck = rowsToCheckSet.ToArray();
+        int[] deletedRows = _gamePlayfield.DeleteCompletedRows(rowsToCheck);
+        _gamePlayfield.ApplyGravity(deletedRows);        
+        _scoreController.UpdateScore(deletedRows, tetromino);
 
         Destroy(tetromino.gameObject);
         CreateRandomTetromino();

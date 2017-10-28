@@ -78,6 +78,12 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
         }
     }
 
+    public GamePlayfieldPosition PositionForWorldCoordinates(Vector3 worldCoordinates)
+    {
+        Vector3 pieceLocalPosition = worldCoordinates - this.transform.position;
+        return new GamePlayfieldPosition(Mathf.FloorToInt(pieceLocalPosition.x), Mathf.FloorToInt(pieceLocalPosition.y));
+    }
+
     public Block BlockAtPosition(GamePlayfieldPosition position)
     {
         if (position.x < 0 || position.y < 0 || position.x >= _blocks.GetLength(0) || position.y >= _blocks.GetLength(1))
@@ -143,6 +149,9 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 
     public int[] DeleteCompletedRows(int[] rowsToCheck)
     {
+        if (rowsToCheck == null || rowsToCheck.Length == 0)
+            return new int[0];
+
         List<int> deletedRows = new List<int>();
         for (int i = 0; i < rowsToCheck.Length; ++i)
         {
