@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(GameArea))]
+[CustomEditor(typeof(GamePlayfieldImpl))]
 public class PlayerShipEditor : Editor
 {
     [DrawGizmo(GizmoType.Selected)]
-    static void DrawGameArea(GameArea gameArea, GizmoType gizmoType)
+    static void DrawGameArea(GamePlayfieldImpl gamePlayfield, GizmoType gizmoType)
     {
         Gizmos.color = Color.red;
-        Rect rect = gameArea.WorldPlayArea;
+        Rect rect = gamePlayfield.WorldPlayArea;
         for (float x = rect.xMin; x <= rect.xMax; x += 1.0f)
             Gizmos.DrawLine(new Vector3(x, rect.yMax, 0.0f), new Vector3(x, rect.yMin, 0.0f));
 

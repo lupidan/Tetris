@@ -141,8 +141,8 @@ public class TetrominoController : MonoBehaviour
     {
         Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
         Vector3 tetrominoPosition = Vector3.zero;
-        tetrominoPosition.x = GameArea.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
-        tetrominoPosition.y = GameArea.WorldPlayArea.yMax - 4.0f + instantiatedTetromino.PositioningOffset.y;
+        tetrominoPosition.x = _gamePlayfield.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
+        tetrominoPosition.y = _gamePlayfield.WorldPlayArea.yMax - 3.0f + instantiatedTetromino.PositioningOffset.y;
         instantiatedTetromino.transform.position = tetrominoPosition;
 
         ActiveTetromino = instantiatedTetromino;

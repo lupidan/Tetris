@@ -6,16 +6,6 @@ using UnityEngine;
 
 public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 {
-    public Rect LocalPlayArea { get { return _localPlayArea; } }
-    public Rect WorldPlayArea
-    {
-        get
-        {
-            Vector2 offset = transform.position;
-            return new Rect(_localPlayArea.position + offset, _localPlayArea.size);
-        }
-    }
-    
     [Header("Components")]
     [SerializeField] private Transform _blocksParent;
     [SerializeField] private Transform _pooledBlocksParent;
@@ -24,7 +14,6 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 
     private ComponentPool<Block> _blockPool;
     private Block[,] _blocks;
-    private Rect _localPlayArea = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
 
     #region MonoBehaviour methods
 
@@ -55,6 +44,17 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
     #endregion
 
     #region GamePlayfield implementation
+
+    public Rect LocalPlayArea { get; private set; }
+    public Rect WorldPlayArea
+    {
+        get
+        {
+            Vector2 offset = transform.position;
+            return new Rect(LocalPlayArea.position + offset, LocalPlayArea.size);
+        }
+    }
+
     public void SetGridSize(int width, int height)
     {
         if (width <= 4 || height <= 4)
@@ -63,7 +63,7 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
         ClearAllBlocks();
 
         _blocks = new Block[width + 2, height + 2];
-        _localPlayArea = new Rect(1, 1, width, height);
+        LocalPlayArea = new Rect(1, 1, width, height);
 
         for (int x = 0; x < _blocks.GetLength(0); ++x)
         {
@@ -121,8 +121,8 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 
     public bool IsRowComplete(int row)
     {
-        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
-        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
         for (int x = initialColumn; x < endingColumn; ++x)
             if (BlockAtPosition(new GamePlayfieldPosition(x, row)) == null)
                 return false;
@@ -131,8 +131,8 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 
     public bool IsRowEmpty(int row)
     {
-        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
-        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
         for (int x = initialColumn; x < endingColumn; ++x)
             if (BlockAtPosition(new GamePlayfieldPosition(x, row)) != null)
                 return false;
@@ -141,8 +141,8 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 
     public void ClearRow(int row)
     {
-        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
-        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
         for (int x = initialColumn; x < endingColumn; ++x)
             RemoveBlockAtPosition(new GamePlayfieldPosition(x, row));
     }
@@ -174,7 +174,7 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
         
         int numberOfEmptyLinesToIgnore = deletedRows.Length;
         int numberOfRowsToLower = 0;
-        int rowMax = Mathf.RoundToInt(_localPlayArea.yMax);
+        int rowMax = Mathf.RoundToInt(LocalPlayArea.yMax);
 
         for (int row = deletedRows[0]; row < rowMax; ++row)
         {
@@ -204,8 +204,8 @@ public class GamePlayfieldImpl : MonoBehaviour, GamePlayfield
 
     private void MoveRowDown(int y, int numberOfRowsDowns)
     {
-        int initialColumn = Mathf.RoundToInt(_localPlayArea.xMin);
-        int endingColumn = Mathf.RoundToInt(_localPlayArea.xMax);
+        int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
+        int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
         int destinationY = y - numberOfRowsDowns;
         for (int x = initialColumn; x < endingColumn; ++x)
         {

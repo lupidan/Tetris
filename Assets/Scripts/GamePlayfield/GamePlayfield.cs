@@ -2,6 +2,8 @@
 
 public interface GamePlayfield
 {
+	Rect WorldPlayArea { get; }
+
 	void SetGridSize(int width, int height);
 	GamePlayfieldPosition PositionForWorldCoordinates(Vector3 worldCoordinates);
 	Block BlockAtPosition(GamePlayfieldPosition position);
