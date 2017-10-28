@@ -15,13 +15,14 @@ public class TetrominoController : MonoBehaviour
     public Tetromino[] TetrominoPrefabs;
 
     private float _autoMoveDownCounter = 0.0f;
-    private Input _input;
+
+    private GameInput _gameInput;
+    private ScoreController _scoreController;
     
     #region MonoBehaviour
 
     void Start()
     {
-        _input = new KeyboardInput();
         CreateRandomTetromino();
     }
 
@@ -31,13 +32,13 @@ public class TetrominoController : MonoBehaviour
     
         _autoMoveDownCounter -= Time.deltaTime;
 
-        if (_input.MoveLeft)
+        if (_gameInput.MoveLeft)
             TryMoveTetromino(ActiveTetromino, new Vector2(-1.0f, 0.0f));
 
-        if (_input.MoveRight)
+        if (_gameInput.MoveRight)
             TryMoveTetromino(ActiveTetromino, new Vector2(1.0f, 0.0f));
             
-        if (_input.MoveDown || _autoMoveDownCounter <= 0.0f)
+        if (_gameInput.MoveDown || _autoMoveDownCounter <= 0.0f)
         {
             _autoMoveDownCounter = MoveDownInterval;
             bool couldMove = TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f));
@@ -45,25 +46,33 @@ public class TetrominoController : MonoBehaviour
                 PlaceTetrominoOnPlayArea(ActiveTetromino);
         }
 
-        if (_input.HardDrop)
+        if (_gameInput.HardDrop)
         {
             while(TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f)));
             PlaceTetrominoOnPlayArea(ActiveTetromino);
         }
 
-        if (_input.RotateClockwise)
+        if (_gameInput.RotateClockwise)
         {
             TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, -90.0f));
             AdjustTetriminoChildBlocksRotation(ActiveTetromino);
         }
 
-        if (_input.RotateCounterClockwise)
+        if (_gameInput.RotateCounterClockwise)
         {
             TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, 90.0f));
             AdjustTetriminoChildBlocksRotation(ActiveTetromino);
         }
     }
 
+    #endregion
+
+    #region Public methods
+    public void Initialize(GameInput gameInput, ScoreController scoreController)
+    {
+        _gameInput = gameInput;
+        _scoreController = scoreController;
+    }
     #endregion
 
     #region Private methods
@@ -125,6 +134,7 @@ public class TetrominoController : MonoBehaviour
         }
 
         DeleteCompletedRows(rowsToCheck);
+        _scoreController.UpdateScore(rowsToCheck.ToArray(), tetromino);
         GameArea.ApplyGravity();
 
         Destroy(tetromino.gameObject);
