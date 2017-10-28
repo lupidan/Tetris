@@ -43,7 +43,7 @@ public class GameMenu : MonoBehaviour
 
 	private void SetScoreLabel(Text label, long score)
 	{
-		label.text = score.ToString("0000000000");
+		label.text = score.ToString("00000000");
 	}
 
 	#endregion
