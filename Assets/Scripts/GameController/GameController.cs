@@ -1,6 +1,8 @@
-﻿
-public interface GameController
+﻿namespace Tetris
 {
-	void StartGame(int width, int height);
-	void RestartGame();
+    public interface GameController
+    {
+        void StartGame(int width, int height);
+        void RestartGame();
+    }
 }
