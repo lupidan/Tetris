@@ -10,6 +10,7 @@ namespace Tetris
         Rect WorldPlayArea { get; }
 
         void SetGridSize(int width, int height);
+        void ClearGrid();
         Position PositionForWorldCoordinates(Vector3 worldCoordinates);
         Block BlockAtPosition(Position position);
         void AddBlockAtPosition(Position position, Color color, bool solid = true);
