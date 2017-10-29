@@ -51,5 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cf0b04bb2c584c69bfdfb47b11c3880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SlowestMoveDownInterval: 1
   MoveDownInterval: 1
+  FastestMoveDownInterval: 0.1
+  FastestSpeedScore: 50000
   ActiveTetromino: {fileID: 0}

@@ -8,7 +8,10 @@ namespace Tetris
     public class TetrominoController : MonoBehaviour
     {
         [Header("Config")]
-        public float MoveDownInterval;
+        [SerializeField] private float SlowestMoveDownInterval;
+        [SerializeField] private float MoveDownInterval;
+        [SerializeField] private float FastestMoveDownInterval;
+        [SerializeField] private long FastestSpeedScore;
 
         [Header("Components")]
         public Tetromino ActiveTetromino;
@@ -22,8 +25,14 @@ namespace Tetris
         private ScoreController _scoreController;
         
         #region MonoBehaviour
+        private void OnEnable()
+        {
+            _scoreController.OnScoreUpdate += OnScoreUpdate;
 
-        void Update ()
+            OnScoreUpdate(_scoreController.Score);
+        }
+
+        private void Update ()
         {
             if (ActiveTetromino == null)
                 return;
@@ -63,6 +72,11 @@ namespace Tetris
             }
         }
 
+        private void OnDisable()
+        {
+            _scoreController.OnScoreUpdate -= OnScoreUpdate;
+        }
+
         #endregion
 
         #region Public methods
@@ -95,6 +109,17 @@ namespace Tetris
         #endregion
 
         #region Private methods
+
+        private void OnScoreUpdate(long score)
+        {
+            long referenceScore = FastestSpeedScore - score;
+            if (referenceScore < 0)
+                referenceScore = 0;
+
+            float percent = (float)referenceScore / (float)FastestSpeedScore;
+            float intervalRange = SlowestMoveDownInterval - FastestMoveDownInterval;
+            MoveDownInterval = FastestMoveDownInterval + (intervalRange * percent);
+        }
 
         private void CreateRandomTetromino()
         {
