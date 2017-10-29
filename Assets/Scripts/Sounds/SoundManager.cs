@@ -1,4 +1,8 @@
-﻿public interface SoundManager
+﻿
+namespace Tetris
 {
-    void PlaySoundWithIdentifier(string identifier);
+    public interface SoundManager
+    {
+        void PlaySoundWithIdentifier(string identifier);
+    }
 }
