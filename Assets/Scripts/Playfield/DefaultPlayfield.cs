@@ -212,6 +212,16 @@ namespace Tetris
             }
         }
 
+        public void ApplyToBlocksInPlayfield(Action<Block> action)
+        {
+            if (_blocks == null || action != null)
+                return;
+
+            for (int x = 0; x < _blocks.GetLength(0); ++x)
+                for (int y = 0; y < _blocks.GetLength(1); ++y)
+                    action(_blocks[x, y]);
+        }
+
         #endregion
 
         #region Private methods

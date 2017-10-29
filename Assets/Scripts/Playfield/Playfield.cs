@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Tetris
 {
@@ -16,6 +17,7 @@ namespace Tetris
         void ClearRow(int row);
         int[] DeleteCompletedRows(int[] rowsToCheck);
         void ApplyGravity(int[] deletedRows);
+        void ApplyToBlocksInPlayfield(Action<Block> action);
     }
 }
 
