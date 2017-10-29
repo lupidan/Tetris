@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 
-public class Block : MonoBehaviour
+namespace Tetris
 {
-    public Color Color
+    public class Block : MonoBehaviour
     {
-        get { return _spriteRenderer.color; }
-        set { _spriteRenderer.color = value; }
-    }
-    private SpriteRenderer _spriteRenderer;
+        public Color Color
+        {
+            get { return _spriteRenderer.color; }
+            set { _spriteRenderer.color = value; }
+        }
+        private SpriteRenderer _spriteRenderer;
 
-    private void Awake()
-    {
-        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        private void Awake()
+        {
+            _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        }
     }
 }
