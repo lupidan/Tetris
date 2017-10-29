@@ -62,13 +62,18 @@ namespace Tetris
 
         public void RestartGame()
         {
-            // NOTHING HERE
+            StartGame(Playfield.Width, Playfield.Height);
         }
 
         public void EndGame()
         {
             MainCamera.DOShakePosition(1.0f, 1.0f);
             GameMenu.GameOverLabel.gameObject.SetActive(true);
+        }
+
+        public void QuitGame()
+        {
+            //Nothing yet
         }
 
         #endregion
