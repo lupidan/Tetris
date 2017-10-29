@@ -58,7 +58,7 @@ namespace Tetris
 
         public void SetDisplayedGameTime(TimeSpan gameTime)
         {
-            _timerLabel.text = gameTime.Minutes + ":" + gameTime.Seconds;
+            _timerLabel.text = gameTime.Minutes.ToString("00") + ":" + gameTime.Seconds.ToString("00");
         }
 
         #endregion

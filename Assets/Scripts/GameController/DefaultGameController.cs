@@ -22,6 +22,8 @@ namespace Tetris
         private ScoreController _scoreController;
         private Input _gameInput;
 
+        private bool _isCountingTime;
+
         #region MonoBehaviour methods
 
         private void Awake()
@@ -39,7 +41,10 @@ namespace Tetris
 
         private void Update()
         {
-            GameTime.Add(TimeSpan.FromSeconds(Time.deltaTime));
+            if (!_isCountingTime)
+                return;
+
+            GameTime += TimeSpan.FromSeconds(Time.deltaTime);
             if (OnGameTimeUpdate != null)
                 OnGameTimeUpdate(GameTime);
         }
@@ -70,6 +75,7 @@ namespace Tetris
             MainCamera.orthographicSize = (playfieldArea.height / 2.0f) * PlayfieldToVisibleRatio;
 
             GameTime = TimeSpan.Zero;
+            _isCountingTime = true;
         }
 
         public void QuitGame()
@@ -78,6 +84,7 @@ namespace Tetris
             TetrominoController.Stop();
             MainMenu.gameObject.SetActive(true);
             GameMenu.gameObject.SetActive(false);
+            _isCountingTime = false;
         }
 
         public void RestartGame()
@@ -92,6 +99,7 @@ namespace Tetris
         {
             MainCamera.DOShakePosition(1.0f, 1.0f);
             GameMenu.GameOverLabel.gameObject.SetActive(true);
+            _isCountingTime = false;
         }
 
         #endregion
