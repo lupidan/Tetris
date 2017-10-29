@@ -9,8 +9,10 @@ namespace Tetris
     {
         private const float PlayfieldToVisibleRatio = 1.42f;
 
+        [Header("Menus")]
         public MainMenu MainMenu;
         public GameMenu GameMenu;
+        [Header("Game elements")]
         public Camera MainCamera;
         public DefaultPlayfield Playfield;
         public TetrominoController TetrominoController;
@@ -28,11 +30,6 @@ namespace Tetris
             MainMenu.Initialize(this);
         }
 
-        public void RestartGame()
-        {
-            // NOTHING HERE
-        }
-
         public void StartGame(int width, int height)
         {		
             Playfield.SetGridSize(width, height);
@@ -48,6 +45,11 @@ namespace Tetris
 
             MainMenu.gameObject.SetActive(false);
             GameMenu.gameObject.SetActive(true);
+        }
+
+        public void RestartGame()
+        {
+            // NOTHING HERE
         }
     }
 }
