@@ -1,42 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DefaultScoreController : ScoreController
+﻿namespace Tetris
 {
-    public long Score { get; private set; }
-    public long Highscore { get; private set; }
-
-    public event ScoreControllerEvent<long> OnScoreUpdate;
-    public event ScoreControllerEvent<long> OnHighscoreUpdate;
-
-    public void ResetScore()
+    public class DefaultScoreController : ScoreController
     {
-        Score = 0;
+        public long Score { get; private set; }
+        public long Highscore { get; private set; }
 
-        if (OnScoreUpdate != null)
-            OnScoreUpdate(Score);
-    }
+        public event ScoreControllerEvent<long> OnScoreUpdate;
+        public event ScoreControllerEvent<long> OnHighscoreUpdate;
 
-    public void UpdateScore(int[] destroyedLines, Tetromino usedTetromino)
-    {
-        switch (destroyedLines.Length)
+        public void ResetScore()
         {
-            case 1: Score += 40; break;
-            case 2: Score += 100; break;
-            case 3: Score += 300; break;
-            case 4: Score += 1200; break;
+            Score = 0;
+
+            if (OnScoreUpdate != null)
+                OnScoreUpdate(Score);
         }
 
-        if (OnScoreUpdate != null)
-            OnScoreUpdate(Score);
-
-        if (Score > Highscore)
+        public void UpdateScore(int[] destroyedLines, Tetromino usedTetromino)
         {
-            Highscore = Score;
+            switch (destroyedLines.Length)
+            {
+                case 1: Score += 40; break;
+                case 2: Score += 100; break;
+                case 3: Score += 300; break;
+                case 4: Score += 1200; break;
+            }
 
-            if (OnHighscoreUpdate != null)
-                OnHighscoreUpdate(Highscore = Score);
+            if (OnScoreUpdate != null)
+                OnScoreUpdate(Score);
+
+            if (Score > Highscore)
+            {
+                Highscore = Score;
+
+                if (OnHighscoreUpdate != null)
+                    OnHighscoreUpdate(Highscore = Score);
+            }
         }
     }
 }

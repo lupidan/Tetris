@@ -1,14 +1,16 @@
-﻿
-public delegate void ScoreControllerEvent<T>(T argument);
-
-public interface ScoreController
+﻿namespace Tetris
 {
-	long Score { get; }
-	long Highscore { get; }
+    public delegate void ScoreControllerEvent<T>(T argument);
 
-	event ScoreControllerEvent<long> OnScoreUpdate;
-	event ScoreControllerEvent<long> OnHighscoreUpdate;
+    public interface ScoreController
+    {
+        long Score { get; }
+        long Highscore { get; }
 
-	void UpdateScore(int[] destroyedLines, Tetromino usedTetromino);
-	void ResetScore();
+        event ScoreControllerEvent<long> OnScoreUpdate;
+        event ScoreControllerEvent<long> OnHighscoreUpdate;
+
+        void UpdateScore(int[] destroyedLines, Tetromino usedTetromino);
+        void ResetScore();
+    }
 }
