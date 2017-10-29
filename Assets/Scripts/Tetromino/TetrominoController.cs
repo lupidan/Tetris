@@ -83,6 +83,9 @@ namespace Tetris
 
         public void CreateRandomTetromino()
         {
+            if (ActiveTetromino != null)
+                _tetrominoSpawner.DiscardTetromino(ActiveTetromino);
+
             Vector3 tetrominoPosition = Vector3.zero;
             tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x);
             tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f);
@@ -155,7 +158,7 @@ namespace Tetris
                 _tetrominoSpawner.DiscardTetromino(tetromino);
                 CreateRandomTetromino();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 _playfield.ApplyToBlocksInPlayfield((block) =>
                 {
