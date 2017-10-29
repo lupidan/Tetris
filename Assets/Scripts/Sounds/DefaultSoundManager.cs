@@ -35,10 +35,5 @@ public class DefaultSoundManager : MonoBehaviour, SoundManager
             _audioSource.PlayOneShot(sound);
     }
 
-    public void StopAllSounds()
-    {
-        _audioSource.Stop();
-    }
-
     #endregion
 }

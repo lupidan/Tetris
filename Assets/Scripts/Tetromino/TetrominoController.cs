@@ -75,15 +75,15 @@ namespace Tetris
 
             if (didRotate)
             {
-                _soundManager.PlaySoundWithIdentifier("sfx_piecerotate");
+                _soundManager.PlaySoundWithIdentifier(SoundIds.RotatedTetromino);
                 ActiveTetromino.AdjustTetrominoChildBlocksRotation();
             }
 
             if (didMove)
-                _soundManager.PlaySoundWithIdentifier("sfx_piecemovement");
+                _soundManager.PlaySoundWithIdentifier(SoundIds.MovedTetromino);
 
             if (didLand)
-                _soundManager.PlaySoundWithIdentifier("sfx_pieceland");
+                _soundManager.PlaySoundWithIdentifier(SoundIds.LandedTetromino);
         }
 
         private void OnDisable()
@@ -205,11 +205,9 @@ namespace Tetris
                 _scoreController.UpdateScore(deletedRows, tetromino);
 
                 if (deletedRows.Length >= 4)
-                    _soundManager.PlaySoundWithIdentifier("sfx_linetetris");
+                    _soundManager.PlaySoundWithIdentifier(SoundIds.ClearTetris);
                 else if (deletedRows.Length > 0)
-                    _soundManager.PlaySoundWithIdentifier("sfx_linesimple");
-                else
-                    _soundManager.PlaySoundWithIdentifier("sfx_pieceland");
+                    _soundManager.PlaySoundWithIdentifier(SoundIds.ClearLine);
 
                 _tetrominoSpawner.DiscardTetromino(tetromino);
                 CreateRandomTetromino();
