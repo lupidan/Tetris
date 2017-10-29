@@ -5,6 +5,9 @@ namespace Tetris
 {
     public class GameMenu : MonoBehaviour
     {
+        public Text GameOverLabel { get { return _gameOverLabel; } }
+
+        [SerializeField] private Text _gameOverLabel;
         [SerializeField] private Text _scoreLabel;
         [SerializeField] private Text _highscoreLabel;
 
@@ -15,6 +18,7 @@ namespace Tetris
 
         private void OnEnable()
         {
+            _gameOverLabel.gameObject.SetActive(false);
             SetDisplayedScore(0);
             SetDisplayedHighscore(1000);
         }

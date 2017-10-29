@@ -21,15 +21,27 @@ namespace Tetris
         private ScoreController _scoreController;
         private Input _gameInput;
 
+        #region MonoBehaviour methods
+
         private void Awake()
         {
             _scoreController = new DefaultScoreController();
             _gameInput = new KeyboardInput();
             
-            TetrominoController.Initialize(Playfield, TetrominoSpawner, _gameInput, _scoreController);
+            TetrominoController.Initialize(this, Playfield, TetrominoSpawner, _gameInput, _scoreController);
             GameMenu.Initialize(this, _scoreController);
             MainMenu.Initialize(this);
         }
+
+        private void Start()
+        {
+            MainMenu.gameObject.SetActive(true);
+            GameMenu.gameObject.SetActive(false);
+        }
+
+        #endregion
+
+        #region GameController implementation
 
         public void StartGame(int width, int height)
         {		
@@ -52,5 +64,13 @@ namespace Tetris
         {
             // NOTHING HERE
         }
+
+        public void EndGame()
+        {
+            MainCamera.DOShakePosition(1.0f, 1.0f);
+            GameMenu.GameOverLabel.gameObject.SetActive(true);
+        }
+
+        #endregion
     }
 }

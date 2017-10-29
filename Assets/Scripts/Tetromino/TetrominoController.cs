@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +15,11 @@ namespace Tetris
 
         private float _autoMoveDownCounter = 0.0f;
 
-        private Input _input;
+        private GameController _gameController;
         public Playfield _playfield;
-        private ScoreController _scoreController;
         private TetrominoSpawner _tetrominoSpawner;
+        private Input _input;
+        private ScoreController _scoreController;
         
         #region MonoBehaviour
 
@@ -65,8 +67,14 @@ namespace Tetris
 
         #region Public methods
 
-        public void Initialize(Playfield playfield, TetrominoSpawner tetrominoSpawner, Input input, ScoreController scoreController)
+        public void Initialize(
+            GameController gameController, 
+            Playfield playfield,
+            TetrominoSpawner tetrominoSpawner,
+            Input input,
+            ScoreController scoreController)
         {
+            _gameController = gameController;
             _playfield = playfield;
             _tetrominoSpawner = tetrominoSpawner;
             _input = input;
@@ -75,7 +83,6 @@ namespace Tetris
 
         public void CreateRandomTetromino()
         {
-            
             Vector3 tetrominoPosition = Vector3.zero;
             tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x);
             tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f);
@@ -91,8 +98,8 @@ namespace Tetris
 
         private bool TryMoveTetromino(Tetromino tetromino, Vector2 moveVector)
         {
-            Vector3 previousPosition = ActiveTetromino.transform.position;
-            ActiveTetromino.transform.position = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);;
+            Vector3 previousPosition = tetromino.transform.position;
+            tetromino.transform.position = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);;
 
             for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
             {
@@ -101,7 +108,7 @@ namespace Tetris
                 Block blockAtPosition = _playfield.BlockAtPosition(position);
                 if (blockAtPosition != null && blockAtPosition.IsSolid)
                 {
-                    ActiveTetromino.transform.position = previousPosition;
+                    tetromino.transform.position = previousPosition;
                     return false;
                 }
             }
@@ -110,9 +117,9 @@ namespace Tetris
 
         private bool TryRotateTetromino(Tetromino tetromino, Vector3 eulerAngles)
         {
-            Vector3 previousEulerAngles = ActiveTetromino.transform.rotation.eulerAngles;
+            Vector3 previousEulerAngles = tetromino.transform.rotation.eulerAngles;
             Vector3 newEulerAngles = previousEulerAngles + eulerAngles;
-            ActiveTetromino.transform.rotation = Quaternion.Euler(newEulerAngles);
+            tetromino.transform.rotation = Quaternion.Euler(newEulerAngles);
 
             Vector2[] testOffsets = SuperRotationSystem.GetTestOffsets(tetromino.WallKick, previousEulerAngles.z, newEulerAngles.z);
             for (int i = 0; i < testOffsets.Length; ++i)
@@ -121,30 +128,46 @@ namespace Tetris
                     return true;
             }
 
-            ActiveTetromino.transform.rotation = Quaternion.Euler(previousEulerAngles);
+            tetromino.transform.rotation = Quaternion.Euler(previousEulerAngles);
             return false;
         }
 
         private void PlaceTetrominoOnPlayfield(Tetromino tetromino)
         {
-            HashSet<int> rowsToCheckSet = new HashSet<int>();
-            for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
+            try
             {
-                Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
-                Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);
-                Color color = tetromino.ChildBlocks[i].Color;
+                HashSet<int> rowsToCheckSet = new HashSet<int>();
+                for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
+                {
+                    Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
+                    Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);
+                    Color color = tetromino.ChildBlocks[i].Color;
 
-                _playfield.AddBlockAtPosition(position, color);
-                rowsToCheckSet.Add(position.y);
+                    _playfield.AddBlockAtPosition(position, color);
+                    rowsToCheckSet.Add(position.y);
+                }
+
+                int[] rowsToCheck = rowsToCheckSet.ToArray();
+                int[] deletedRows = _playfield.DeleteCompletedRows(rowsToCheck);
+                _playfield.ApplyGravity(deletedRows);        
+                _scoreController.UpdateScore(deletedRows, tetromino);
+
+                _tetrominoSpawner.DiscardTetromino(tetromino);
+                CreateRandomTetromino();
             }
-
-            int[] rowsToCheck = rowsToCheckSet.ToArray();
-            int[] deletedRows = _playfield.DeleteCompletedRows(rowsToCheck);
-            _playfield.ApplyGravity(deletedRows);        
-            _scoreController.UpdateScore(deletedRows, tetromino);
-
-            _tetrominoSpawner.DiscardTetromino(tetromino);
-            CreateRandomTetromino();
+            catch (Exception exception)
+            {
+                _playfield.ApplyToBlocksInPlayfield((block) =>
+                {
+                    if (block == null)
+                        return;
+                    
+                    block.Color = Color.white;
+                });
+                _tetrominoSpawner.DiscardTetromino(tetromino);
+                _gameController.EndGame();
+                ActiveTetromino = null;
+            }
         }
 
         #endregion
