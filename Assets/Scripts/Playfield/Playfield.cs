@@ -5,6 +5,8 @@ namespace Tetris
 {
     public interface Playfield
     {
+        int Width { get; }
+        int Height { get; }
         Rect WorldPlayArea { get; }
 
         void SetGridSize(int width, int height);

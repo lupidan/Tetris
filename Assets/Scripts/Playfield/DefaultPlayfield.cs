@@ -49,7 +49,8 @@ namespace Tetris
         #endregion
 
         #region GamePlayfield implementation
-
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public Rect LocalPlayArea { get; private set; }
         public Rect WorldPlayArea
         {
@@ -69,6 +70,8 @@ namespace Tetris
 
             _blocks = new Block[width + LeftMargin + RightMargin, height + BottomMargin + TopMargin];
             LocalPlayArea = new Rect(LeftMargin, BottomMargin, width, height);
+            Width = width;
+            Height = height;
 
             for (int y = 0; y < _blocks.GetLength(1); ++y)
             {
@@ -87,8 +90,6 @@ namespace Tetris
                 for (int yTop = _blocks.GetLength(1) - TopMargin; yTop < _blocks.GetLength(1); ++yTop)
                     AddBlockAtPosition(new Position(x, yTop), Color.white, solid: false);
             }
-
-            
         }
 
         public Position PositionForWorldCoordinates(Vector3 worldCoordinates)
