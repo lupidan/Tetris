@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _positioningOffset: {x: 0.5, y: 0.5, z: 0}
-  _wallKickType: 0
+  _wallKick: 0
   _childBlocks:
   - {fileID: 114785759371917184}
   - {fileID: 114115604262848722}
