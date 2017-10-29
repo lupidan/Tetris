@@ -37,6 +37,11 @@ namespace Tetris
             GameMenu.gameObject.SetActive(false);
         }
 
+        private void Update()
+        {
+            GameTime.Add(TimeSpan.FromSeconds(Time.deltaTime));
+        }
+
         #endregion
 
         #region GameController implementation
@@ -61,6 +66,8 @@ namespace Tetris
             cameraPosition.y = playfieldArea.center.y;
             MainCamera.transform.position = cameraPosition;
             MainCamera.orthographicSize = (playfieldArea.height / 2.0f) * PlayfieldToVisibleRatio;
+
+            GameTime = TimeSpan.Zero;
         }
 
         public void QuitGame()
