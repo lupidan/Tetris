@@ -22,8 +22,12 @@ namespace Tetris
         private ScoreController _scoreController;
         
         #region MonoBehaviour
+        private void Start()
+        {
+            _scoreController.OnScoreUpdate += OnGameTimeUpdated;
+        }
 
-        void Update ()
+        private void Update ()
         {
             if (ActiveTetromino == null)
                 return;
@@ -63,6 +67,11 @@ namespace Tetris
             }
         }
 
+        private void OnDestroy()
+        {
+            _gameController.OnGameTimeUpdate -= OnGameTimeUpdated;
+        }
+
         #endregion
 
         #region Public methods
@@ -95,6 +104,11 @@ namespace Tetris
         #endregion
 
         #region Private methods
+
+        private void OnScoreUpdate(long score)
+        {
+            
+        }
 
         private void CreateRandomTetromino()
         {
