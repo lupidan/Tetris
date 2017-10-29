@@ -18,6 +18,7 @@ namespace Tetris
         public DefaultPlayfield Playfield;
         public DefaultTetrominoSpawner TetrominoSpawner;
         public TetrominoController TetrominoController;
+        public DefaultSoundManager SoundManager;
         
         private ScoreController _scoreController;
         private Input _gameInput;
