@@ -22,11 +22,6 @@ public class TetrominoController : MonoBehaviour
     
     #region MonoBehaviour
 
-    void Start()
-    {
-        CreateRandomTetromino();
-    }
-
     void Update ()
     {
         if (ActiveTetromino == null)
@@ -70,12 +65,26 @@ public class TetrominoController : MonoBehaviour
     #endregion
 
     #region Public methods
+
     public void Initialize(GamePlayfield gamePlayfield, GameInput gameInput, ScoreController scoreController)
     {
         _gamePlayfield = gamePlayfield;
         _gameInput = gameInput;
         _scoreController = scoreController;
     }
+
+    public void CreateRandomTetromino()
+    {
+        Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
+        Vector3 tetrominoPosition = Vector3.zero;
+        tetrominoPosition.x = _gamePlayfield.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
+        tetrominoPosition.y = _gamePlayfield.WorldPlayArea.yMax - 3.0f + instantiatedTetromino.PositioningOffset.y;
+        instantiatedTetromino.transform.position = tetrominoPosition;
+
+        ActiveTetromino = instantiatedTetromino;
+        _autoMoveDownCounter = MoveDownInterval;
+    }
+
     #endregion
 
     #region Private methods
@@ -135,18 +144,6 @@ public class TetrominoController : MonoBehaviour
 
         Destroy(tetromino.gameObject);
         CreateRandomTetromino();
-    }
-
-    private void CreateRandomTetromino()
-    {
-        Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
-        Vector3 tetrominoPosition = Vector3.zero;
-        tetrominoPosition.x = _gamePlayfield.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
-        tetrominoPosition.y = _gamePlayfield.WorldPlayArea.yMax - 3.0f + instantiatedTetromino.PositioningOffset.y;
-        instantiatedTetromino.transform.position = tetrominoPosition;
-
-        ActiveTetromino = instantiatedTetromino;
-        _autoMoveDownCounter = MoveDownInterval;
     }
 
     #endregion
