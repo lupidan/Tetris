@@ -40,6 +40,8 @@ namespace Tetris
         private void Update()
         {
             GameTime.Add(TimeSpan.FromSeconds(Time.deltaTime));
+            if (OnGameTimeUpdate != null)
+                OnGameTimeUpdate(GameTime);
         }
 
         #endregion
