@@ -8,6 +8,11 @@
         public event ScoreControllerEvent<long> OnScoreUpdate;
         public event ScoreControllerEvent<long> OnHighscoreUpdate;
 
+        public DefaultScoreController()
+        {
+            Highscore = PlayerPrefsScore.CurrentHighscore;
+        }
+
         public void ResetScore()
         {
             Score = 0;
@@ -32,6 +37,7 @@
             if (Score > Highscore)
             {
                 Highscore = Score;
+                PlayerPrefsScore.CurrentHighscore = Score;
 
                 if (OnHighscoreUpdate != null)
                     OnHighscoreUpdate(Highscore = Score);
