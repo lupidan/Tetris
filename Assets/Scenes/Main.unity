@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0830e8b92803545acb6e40e82514728e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainCamera: {fileID: 1445579162}
   GamePlayfield: {fileID: 230862858}
   TetrominoController: {fileID: 497726312}
   GameMenu: {fileID: 1380842400}
@@ -514,6 +515,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1015449666480592, guid: 9c04368b3f85747ddbaca13d60150e11, type: 2}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224085488485305510, guid: 9c04368b3f85747ddbaca13d60150e11,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
