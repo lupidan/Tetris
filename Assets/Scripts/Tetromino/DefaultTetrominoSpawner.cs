@@ -55,12 +55,16 @@ namespace Tetris
 
             Tetromino tetromino = _pools[prefabIndex].Get();
             tetromino.transform.position = position + tetromino.PositioningOffset;
+            tetromino.OriginPool = _pools[prefabIndex];
             return tetromino;
         }
 
         public void DiscardTetromino(Tetromino tetromino)
         {
-            Destroy(tetromino.gameObject);
+            if (tetromino.OriginPool != null)
+                tetromino.OriginPool.Return(tetromino);
+            else
+                Destroy(tetromino.gameObject);
         }
         #endregion
 
