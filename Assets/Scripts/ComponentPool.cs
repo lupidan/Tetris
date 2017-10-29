@@ -45,7 +45,7 @@ namespace Tetris
         {
             for (int i = 0; i < nComponents; ++i)
             {
-                var pooledObject = _instantiateAction();
+                T pooledObject = _instantiateAction();
                 _pooledObjects.Push(pooledObject);
             }
             
