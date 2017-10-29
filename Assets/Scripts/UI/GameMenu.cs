@@ -1,71 +1,74 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class GameMenu : MonoBehaviour
+namespace Tetris
 {
-	[SerializeField] private Text _scoreLabel;
-	[SerializeField] private Text _highscoreLabel;
+    public class GameMenu : MonoBehaviour
+    {
+        [SerializeField] private Text _scoreLabel;
+        [SerializeField] private Text _highscoreLabel;
 
-	private IGameController _gameController;
-	private ScoreController _scoreController;
+        private GameController _gameController;
+        private ScoreController _scoreController;
 
-	#region MonoBehaviour
+        #region MonoBehaviour
 
-	private void OnEnable()
-	{
-		SetDisplayedScore(0);
-		SetDisplayedHighscore(1000);
-	}
+        private void OnEnable()
+        {
+            SetDisplayedScore(0);
+            SetDisplayedHighscore(1000);
+        }
 
-	private void Start()
-	{
-		_scoreController.OnScoreUpdate += SetDisplayedScore;
-		_scoreController.OnHighscoreUpdate += SetDisplayedHighscore;
-	}
+        private void Start()
+        {
+            _scoreController.OnScoreUpdate += SetDisplayedScore;
+            _scoreController.OnHighscoreUpdate += SetDisplayedHighscore;
+        }
 
-	private void OnDestroy()
-	{
-		_scoreController.OnScoreUpdate -= SetDisplayedScore;
-		_scoreController.OnHighscoreUpdate -= SetDisplayedHighscore;
-	}
+        private void OnDestroy()
+        {
+            _scoreController.OnScoreUpdate -= SetDisplayedScore;
+            _scoreController.OnHighscoreUpdate -= SetDisplayedHighscore;
+        }
 
-	#endregion
+        #endregion
 
-	#region Public methods
+        #region Public methods
 
-	public void Initialize(IGameController gameController, ScoreController scoreController)
-	{
-		this._gameController = gameController;
-		this._scoreController = scoreController;
-	}
+        public void Initialize(GameController gameController, ScoreController scoreController)
+        {
+            this._gameController = gameController;
+            this._scoreController = scoreController;
+        }
 
-	public void SetDisplayedScore(long score)
-	{
-		SetScoreLabel(_scoreLabel, score);
-	}
+        public void SetDisplayedScore(long score)
+        {
+            SetScoreLabel(_scoreLabel, score);
+        }
 
-	public void SetDisplayedHighscore(long highscore)
-	{
-		SetScoreLabel(_highscoreLabel, highscore);
-	}
+        public void SetDisplayedHighscore(long highscore)
+        {
+            SetScoreLabel(_highscoreLabel, highscore);
+        }
 
-	#endregion
+        #endregion
 
-	#region Button actions
+        #region Button actions
 
-	public void RestartButtonWasSelected()
-	{
-		_gameController.RestartGame();
-	}
+        public void RestartButtonWasSelected()
+        {
+            _gameController.RestartGame();
+        }
 
-	#endregion
+        #endregion
 
-	#region Private methods
+        #region Private methods
 
-	private void SetScoreLabel(Text label, long score)
-	{
-		label.text = score.ToString("00000000");
-	}
+        private void SetScoreLabel(Text label, long score)
+        {
+            label.text = score.ToString("00000000");
+        }
 
-	#endregion
+        #endregion
+    }
 }
