@@ -2,11 +2,12 @@
 
 namespace Tetris
 {
-    public class DefaultTetrominoSpawner : MonoBehaviour
+    public class DefaultTetrominoSpawner : MonoBehaviour, TetrominoSpawner
     {
         [Header("Prefabs")]
         public Tetromino[] TetrominoPrefabs;
 
+        #region TetrominoSpawner implementation
         public Tetromino SpawnRandomTetrominoAtPosition(Vector3 position)
         {
             Tetromino tetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
@@ -18,5 +19,6 @@ namespace Tetris
         {
             Destroy(tetromino.gameObject);
         }
+        #endregion
     }
 }
