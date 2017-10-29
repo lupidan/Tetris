@@ -15,6 +15,7 @@ namespace Tetris
         [Header("Game elements")]
         public Camera MainCamera;
         public DefaultPlayfield Playfield;
+        public DefaultTetrominoSpawner TetrominoSpawner;
         public TetrominoController TetrominoController;
         
         private ScoreController _scoreController;
@@ -25,7 +26,7 @@ namespace Tetris
             _scoreController = new DefaultScoreController();
             _gameInput = new KeyboardInput();
             
-            TetrominoController.Initialize(Playfield, _gameInput, _scoreController);
+            TetrominoController.Initialize(Playfield, TetrominoSpawner, _gameInput, _scoreController);
             GameMenu.Initialize(this, _scoreController);
             MainMenu.Initialize(this);
         }

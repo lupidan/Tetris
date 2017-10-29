@@ -12,6 +12,8 @@ namespace Tetris
             ITetrominoRotation
         }
 
+        public ComponentPool<Tetromino> OriginPool;
+
         public Vector3 PositioningOffset { get { return _positioningOffset; } }
         public WallKickType WallKick { get { return _wallKick; } }
         public Block[] ChildBlocks { get { return _childBlocks; } }

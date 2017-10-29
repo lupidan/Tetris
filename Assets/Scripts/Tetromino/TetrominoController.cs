@@ -11,16 +11,13 @@ namespace Tetris
 
         [Header("Components")]
         public Tetromino ActiveTetromino;
-        
-
-        [Header("Prefabs")]
-        public Tetromino[] TetrominoPrefabs;
 
         private float _autoMoveDownCounter = 0.0f;
 
         private Input _input;
         public Playfield _playfield;
         private ScoreController _scoreController;
+        private TetrominoSpawner _tetrominoSpawner;
         
         #region MonoBehaviour
 
@@ -68,23 +65,23 @@ namespace Tetris
 
         #region Public methods
 
-        public void Initialize(Playfield playfield, Input input, ScoreController scoreController)
+        public void Initialize(Playfield playfield, TetrominoSpawner tetrominoSpawner, Input input, ScoreController scoreController)
         {
             _playfield = playfield;
+            _tetrominoSpawner = tetrominoSpawner;
             _input = input;
             _scoreController = scoreController;
         }
 
         public void CreateRandomTetromino()
         {
-            Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
+            
             Vector3 tetrominoPosition = Vector3.zero;
-            tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x) + instantiatedTetromino.PositioningOffset.x;
-            tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f) + instantiatedTetromino.PositioningOffset.y;
+            tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x);
+            tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f);
             tetrominoPosition.z = 1.0f;
-            instantiatedTetromino.transform.position = tetrominoPosition;
 
-            ActiveTetromino = instantiatedTetromino;
+            ActiveTetromino = _tetrominoSpawner.SpawnRandomTetrominoAtPosition(tetrominoPosition);
             _autoMoveDownCounter = MoveDownInterval;
         }
 
@@ -146,7 +143,7 @@ namespace Tetris
             _playfield.ApplyGravity(deletedRows);        
             _scoreController.UpdateScore(deletedRows, tetromino);
 
-            Destroy(tetromino.gameObject);
+            _tetrominoSpawner.DiscardTetromino(tetromino);
             CreateRandomTetromino();
         }
 
