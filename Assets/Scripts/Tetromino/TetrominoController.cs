@@ -79,8 +79,9 @@ namespace Tetris
         {
             Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
             Vector3 tetrominoPosition = Vector3.zero;
-            tetrominoPosition.x = _playfield.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
-            tetrominoPosition.y = _playfield.WorldPlayArea.yMax - 3.0f + instantiatedTetromino.PositioningOffset.y;
+            tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x) + instantiatedTetromino.PositioningOffset.x;
+            tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f) + instantiatedTetromino.PositioningOffset.y;
+            tetrominoPosition.z = 1.0f;
             instantiatedTetromino.transform.position = tetrominoPosition;
 
             ActiveTetromino = instantiatedTetromino;
