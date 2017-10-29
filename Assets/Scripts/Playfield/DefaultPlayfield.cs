@@ -85,7 +85,7 @@ namespace Tetris
                     AddBlockAtPosition(new Position(x, yBottom), Color.white);
 
                 for (int yTop = _blocks.GetLength(1) - TopMargin; yTop < _blocks.GetLength(1); ++yTop)
-                    AddBlockAtPosition(new Position(x, yTop), new Color(1.0f, 1.0f, 1.0f, 0.5f), solid: false);
+                    AddBlockAtPosition(new Position(x, yTop), Color.white, solid: false);
             }
 
             

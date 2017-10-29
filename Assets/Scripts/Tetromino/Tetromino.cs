@@ -22,7 +22,7 @@ namespace Tetris
 
         public void AdjustTetrominoChildBlocksRotation()
         {
-            for (int i = 0; i < ChildBlocks.Length; i++)
+            for (int i = 0; i < ChildBlocks.Length; ++i)
                 ChildBlocks[i].transform.rotation = Quaternion.identity;
         }
     }
