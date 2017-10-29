@@ -15,18 +15,14 @@ namespace Tetris
         private ScoreController _scoreController;
 
         #region MonoBehaviour
-
-        private void OnEnable()
-        {
-            _gameOverLabel.gameObject.SetActive(false);
-            SetDisplayedScore(0);
-            SetDisplayedHighscore(1000);
-        }
-
+        
         private void Start()
         {
             _scoreController.OnScoreUpdate += SetDisplayedScore;
             _scoreController.OnHighscoreUpdate += SetDisplayedHighscore;
+
+            SetDisplayedScore(_scoreController.Score);
+            SetDisplayedHighscore(_scoreController.Highscore);
         }
 
         private void OnDestroy()
