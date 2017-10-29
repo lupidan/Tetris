@@ -18,6 +18,7 @@ namespace Tetris
         public DefaultPlayfield Playfield;
         public DefaultTetrominoSpawner TetrominoSpawner;
         public TetrominoController TetrominoController;
+        public DefaultSoundManager SoundManager;
         
         private ScoreController _scoreController;
         private Input _gameInput;
@@ -31,7 +32,7 @@ namespace Tetris
             _scoreController = new DefaultScoreController();
             _gameInput = new KeyboardInput();
             
-            TetrominoController.Initialize(this, Playfield, TetrominoSpawner, _gameInput, _scoreController);
+            TetrominoController.Initialize(this, Playfield, TetrominoSpawner, SoundManager, _gameInput, _scoreController);
             GameMenu.Initialize(this, _scoreController);
             MainMenu.Initialize(this);
 
@@ -76,6 +77,8 @@ namespace Tetris
 
             GameTime = TimeSpan.Zero;
             _isCountingTime = true;
+
+            SoundManager.PlaySoundWithIdentifier(SoundIds.GameStart);
         }
 
         public void QuitGame()
@@ -98,6 +101,7 @@ namespace Tetris
         public void GameOver()
         {
             MainCamera.DOShakePosition(1.0f, 1.0f);
+            SoundManager.PlaySoundWithIdentifier(SoundIds.GameOver);
             GameMenu.GameOverLabel.gameObject.SetActive(true);
             _isCountingTime = false;
         }
