@@ -9,7 +9,7 @@ namespace Tetris
         void SetGridSize(int width, int height);
         Position PositionForWorldCoordinates(Vector3 worldCoordinates);
         Block BlockAtPosition(Position position);
-        void AddBlockAtPosition(Position position, Color color);
+        void AddBlockAtPosition(Position position, Color color, bool solid = true);
         void RemoveBlockAtPosition(Position position);
         bool IsRowComplete(int row);
         bool IsRowEmpty(int row);

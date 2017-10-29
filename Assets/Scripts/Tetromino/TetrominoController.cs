@@ -79,8 +79,9 @@ namespace Tetris
         {
             Tetromino instantiatedTetromino = Instantiate(TetrominoPrefabs[UnityEngine.Random.Range(0,7)]);
             Vector3 tetrominoPosition = Vector3.zero;
-            tetrominoPosition.x = _playfield.WorldPlayArea.center.x + instantiatedTetromino.PositioningOffset.x;
-            tetrominoPosition.y = _playfield.WorldPlayArea.yMax - 3.0f + instantiatedTetromino.PositioningOffset.y;
+            tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x) + instantiatedTetromino.PositioningOffset.x;
+            tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f) + instantiatedTetromino.PositioningOffset.y;
+            tetrominoPosition.z = 1.0f;
             instantiatedTetromino.transform.position = tetrominoPosition;
 
             ActiveTetromino = instantiatedTetromino;
@@ -96,11 +97,12 @@ namespace Tetris
             Vector3 previousPosition = ActiveTetromino.transform.position;
             ActiveTetromino.transform.position = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);;
 
-            for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
+            for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
             {
                 Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
                 Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);
-                if (_playfield.BlockAtPosition(position) != null)
+                Block blockAtPosition = _playfield.BlockAtPosition(position);
+                if (blockAtPosition != null && blockAtPosition.IsSolid)
                 {
                     ActiveTetromino.transform.position = previousPosition;
                     return false;
@@ -116,7 +118,7 @@ namespace Tetris
             ActiveTetromino.transform.rotation = Quaternion.Euler(newEulerAngles);
 
             Vector2[] testOffsets = SuperRotationSystem.GetTestOffsets(tetromino.WallKick, previousEulerAngles.z, newEulerAngles.z);
-            for (int i = 0; i < testOffsets.Length; i++)
+            for (int i = 0; i < testOffsets.Length; ++i)
             {
                 if (TryMoveTetromino(tetromino, testOffsets[i]))
                     return true;
@@ -129,7 +131,7 @@ namespace Tetris
         private void PlaceTetrominoOnPlayfield(Tetromino tetromino)
         {
             HashSet<int> rowsToCheckSet = new HashSet<int>();
-            for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
+            for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
             {
                 Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
                 Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);

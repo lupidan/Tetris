@@ -7,7 +7,7 @@ namespace Tetris
 {
     public class DefaultGameController : MonoBehaviour, GameController
     {
-        private const float PlayfieldToVisibleRatio = 1.42f;
+        private const float PlayfieldToVisibleRatio = 1.5f;
 
         [Header("Menus")]
         public MainMenu MainMenu;

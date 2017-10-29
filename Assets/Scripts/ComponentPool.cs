@@ -43,7 +43,7 @@ namespace Tetris
 
         private void InstantiateComponentsIntoPool(int nComponents)
         {
-            for (int i = 0; i < nComponents; i++)
+            for (int i = 0; i < nComponents; ++i)
             {
                 var pooledObject = _instantiateAction();
                 _pooledObjects.Push(pooledObject);
