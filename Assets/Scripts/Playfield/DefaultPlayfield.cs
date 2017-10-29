@@ -214,7 +214,7 @@ namespace Tetris
 
         public void ApplyToBlocksInPlayfield(Action<Block> action)
         {
-            if (_blocks == null || action != null)
+            if (_blocks == null || action == null)
                 return;
 
             for (int x = 0; x < _blocks.GetLength(0); ++x)
