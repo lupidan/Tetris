@@ -8,6 +8,11 @@ namespace Tetris
 {
     public class DefaultPlayfield : MonoBehaviour, Playfield
     {
+        private const int BottomMargin = 2;
+        private const int TopMargin = 2;
+        private const int RightMargin = 2;
+        private const int LeftMargin = 2;
+
         [Header("Components")]
         [SerializeField] private Transform _blocksParent;
         [SerializeField] private Transform _pooledBlocksParent;
@@ -62,20 +67,28 @@ namespace Tetris
 
             ClearAllBlocks();
 
-            _blocks = new Block[width + 2, height + 2];
-            LocalPlayArea = new Rect(1, 1, width, height);
+            _blocks = new Block[width + LeftMargin + RightMargin, height + BottomMargin + TopMargin];
+            LocalPlayArea = new Rect(LeftMargin, BottomMargin, width, height);
 
-            for (int x = 0; x < _blocks.GetLength(0); ++x)
+            for (int y = 0; y < _blocks.GetLength(1); ++y)
             {
-                AddBlockAtPosition(new Position(x, 0), Color.white);
-                AddBlockAtPosition(new Position(x, _blocks.GetLength(1) - 1), Color.white);
+                for (int xLeft = 0; xLeft < LeftMargin; ++xLeft)
+                    AddBlockAtPosition(new Position(xLeft, y), Color.white);
+
+                for (int xRight = _blocks.GetLength(0) - RightMargin; xRight < _blocks.GetLength(0); ++xRight)
+                    AddBlockAtPosition(new Position(xRight, y), Color.white);
             }
 
-            for (int y = 1; y < _blocks.GetLength(1) - 1; ++y)
+            for (int x = LeftMargin; x < _blocks.GetLength(0) - RightMargin; ++x)
             {
-                AddBlockAtPosition(new Position(0, y), Color.white);
-                AddBlockAtPosition(new Position(_blocks.GetLength(0) - 1, y), Color.white);
+                for (int yBottom = 0; yBottom < BottomMargin; ++yBottom)
+                    AddBlockAtPosition(new Position(x, yBottom), Color.white);
+
+                for (int yTop = _blocks.GetLength(1) - TopMargin; yTop < _blocks.GetLength(1); ++yTop)
+                    AddBlockAtPosition(new Position(x, yTop), new Color(1.0f, 1.0f, 1.0f, 0.5f), solid: false);
             }
+
+            
         }
 
         public Position PositionForWorldCoordinates(Vector3 worldCoordinates)
