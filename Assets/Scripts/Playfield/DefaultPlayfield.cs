@@ -168,6 +168,8 @@ namespace Tetris
 
         public void ClearRow(int row)
         {
+            AnimateRowClear(row);
+
             int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
             int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
             for (int x = initialColumn; x < endingColumn; ++x)
@@ -239,8 +241,10 @@ namespace Tetris
 
         #region Private methods
 
-        private void MoveRowDown(int y, int numberOfRowsDowns)
+        private void MoveRowDown(int y, int numberOfRowsDowns, float animationTime = 0.5f)
         {
+            Sequence animationSequence = DOTween.Sequence();
+
             int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
             int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
             int destinationY = y - numberOfRowsDowns;
@@ -251,9 +255,50 @@ namespace Tetris
                 {
                     _blocks[x, y] = null;
                     _blocks[x, destinationY] = block;
-                    block.transform.DOLocalMoveY(destinationY + 0.5f, 0.5f).SetEase(Ease.OutBounce);
+                    animationSequence.Insert(
+                        0.0f, 
+                        block.transform.DOLocalMoveY(destinationY + 0.5f, animationTime).SetEase(Ease.OutBounce));
+                    
                 }
             }
+
+            animationSequence.Play();
+        }
+
+        private void AnimateRowClear(int y, float animationTime = 0.5f)
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            int initialColumn = Mathf.RoundToInt(LocalPlayArea.xMin);
+            int endingColumn = Mathf.RoundToInt(LocalPlayArea.xMax);
+            for (int x = initialColumn; x < endingColumn; ++x)
+            {
+                Block clearedBlock = _blocks[x, y];
+
+                Block animatedBlock = _blockPool.Get();
+                Vector3 initialPosition = clearedBlock.transform.position;
+                initialPosition.z = -2.0f;
+                Color initialColor = clearedBlock.Color;
+                Color endingColor = clearedBlock.Color;
+                endingColor.a = 0.0f;
+
+                animatedBlock.transform.position = initialPosition;
+                animatedBlock.Color = initialColor;
+
+                Tweener positionTweener = animatedBlock.transform.DOMoveY(y - 0.5f, animationTime)
+                    .OnComplete(() => _blockPool.Return(animatedBlock));
+
+                Tweener colorTweener = DOTween.To(
+                    () => animatedBlock.Color,
+                    (interpolatedColor) => animatedBlock.Color = interpolatedColor,
+                    endingColor,
+                    animationTime);
+
+                sequence.Insert(0.0f, positionTweener);
+                sequence.Insert(0.0f, colorTweener);
+            }
+
+            sequence.Play();                
         }
 
         #endregion
