@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2787813f0b6f48b6acc79eb1a9c2fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TetrominoPrefabs:
+  _tetrominoPrefabs:
   - {fileID: 114774991385891162, guid: ce5938738374542c7927daa163e0239c, type: 2}
   - {fileID: 114614201703280510, guid: 5750fbe18be0b4d87975ddff6e5d0104, type: 2}
   - {fileID: 114732378146771752, guid: 06e8acaf82b864fba8669c01998105d2, type: 2}

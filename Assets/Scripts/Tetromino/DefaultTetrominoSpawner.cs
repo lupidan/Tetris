@@ -5,7 +5,7 @@ namespace Tetris
     public class DefaultTetrominoSpawner : MonoBehaviour, TetrominoSpawner
     {
         [Header("Prefabs")]
-        public Tetromino[] TetrominoPrefabs;
+        [SerializeField] private Tetromino[] _tetrominoPrefabs;
 
         #region TetrominoSpawner implementation
         public Tetromino SpawnRandomTetrominoAtPosition(Vector3 position)
