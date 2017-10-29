@@ -5,22 +5,22 @@ using UnityEngine;
 
 public class DefaultSoundManager : MonoBehaviour, SoundManager
 {
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip[] sounds;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip[] _sounds;
 
-    private Dictionary<string, AudioClip> soundsDatabase;
+    private Dictionary<string, AudioClip> _soundsDatabase = new Dictionary<string, AudioClip>();
 
     #region MonoBehaviour methods
 
     private void Awake()
     {
-        for (int i = 0; i < sounds.Length; ++i)
+        for (int i = 0; i < _sounds.Length; ++i)
         {
-            AudioClip sound = sounds[i];
-            if (soundsDatabase.ContainsKey(sound.name))
+            AudioClip sound = _sounds[i];
+            if (_soundsDatabase.ContainsKey(sound.name))
                 throw new Exception("An AudioClip named " + sound.name + " already exists.");
 
-            soundsDatabase.Add(sound.name, sound);
+            _soundsDatabase.Add(sound.name, sound);
         }
     }
 
@@ -31,13 +31,13 @@ public class DefaultSoundManager : MonoBehaviour, SoundManager
     public void PlaySoundWithIdentifier(string identifier)
     {
         AudioClip sound;
-        if (soundsDatabase.TryGetValue(identifier, out sound))
-            audioSource.PlayOneShot(sound);
+        if (_soundsDatabase.TryGetValue(identifier, out sound))
+            _audioSource.PlayOneShot(sound);
     }
 
     public void StopAllSounds()
     {
-        audioSource.Stop();
+        _audioSource.Stop();
     }
 
     #endregion
