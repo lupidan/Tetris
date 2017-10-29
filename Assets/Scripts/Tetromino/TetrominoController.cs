@@ -120,6 +120,7 @@ namespace Tetris
         {
             if (ActiveTetromino != null)
                 _tetrominoSpawner.DiscardTetromino(ActiveTetromino);
+            ActiveTetromino = null;
         }
 
         #endregion

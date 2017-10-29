@@ -78,7 +78,7 @@ namespace Tetris
             GameTime = TimeSpan.Zero;
             _isCountingTime = true;
 
-            SoundManager.PlaySoundWithIdentifier("sfx_gamestart");
+            SoundManager.PlaySoundWithIdentifier(SoundIds.GameStart);
         }
 
         public void QuitGame()
@@ -101,7 +101,7 @@ namespace Tetris
         public void GameOver()
         {
             MainCamera.DOShakePosition(1.0f, 1.0f);
-            SoundManager.PlaySoundWithIdentifier("sfx_gameover");
+            SoundManager.PlaySoundWithIdentifier(SoundIds.GameOver);
             GameMenu.GameOverLabel.gameObject.SetActive(true);
             _isCountingTime = false;
         }
