@@ -101,7 +101,8 @@ namespace Tetris
             {
                 Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
                 Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);
-                if (_playfield.BlockAtPosition(position) != null)
+                Block blockAtPosition = _playfield.BlockAtPosition(position);
+                if (blockAtPosition != null && blockAtPosition.IsSolid)
                 {
                     ActiveTetromino.transform.position = previousPosition;
                     return false;

@@ -92,7 +92,7 @@ namespace Tetris
             return _blocks[position.x, position.y];
         }
 
-        public void AddBlockAtPosition(Position position, Color color)
+        public void AddBlockAtPosition(Position position, Color color, bool solid = true)
         {
             if (position.x < 0 || position.y < 0 || position.x >= _blocks.GetLength(0) || position.y >= _blocks.GetLength(1))
                 throw new Exception("Index (" + position.x + ", " + position.y + ") is out of bounds.");
@@ -103,6 +103,7 @@ namespace Tetris
             Block block = _blockPool.Get();
             block.transform.localPosition = new Vector3(position.x + 0.5f, position.y + 0.5f, 0.0f);
             block.Color = color;
+            block.IsSolid = solid;
             _blocks[position.x, position.y] = block;
         }
 
