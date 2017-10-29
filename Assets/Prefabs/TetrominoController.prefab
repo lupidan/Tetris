@@ -54,5 +54,5 @@ MonoBehaviour:
   SlowestMoveDownInterval: 1
   MoveDownInterval: 1
   FastestMoveDownInterval: 0.1
-  FastestSpeedScore: 5000
+  FastestSpeedScore: 50000
   ActiveTetromino: {fileID: 0}

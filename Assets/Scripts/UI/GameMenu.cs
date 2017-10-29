@@ -18,7 +18,7 @@ namespace Tetris
 
         #region MonoBehaviour
         
-        private void Start()
+        private void OnEnable()
         {
             _scoreController.OnScoreUpdate += SetDisplayedScore;
             _scoreController.OnHighscoreUpdate += SetDisplayedHighscore;
@@ -29,7 +29,7 @@ namespace Tetris
             SetDisplayedGameTime(_gameController.GameTime);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             _scoreController.OnScoreUpdate -= SetDisplayedScore;
             _scoreController.OnHighscoreUpdate -= SetDisplayedHighscore;
