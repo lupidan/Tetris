@@ -81,7 +81,22 @@ namespace Tetris
             _scoreController = scoreController;
         }
 
-        public void CreateRandomTetromino()
+        public void Run()
+        {
+            CreateRandomTetromino();
+        }
+
+        public void Stop()
+        {
+            if (ActiveTetromino != null)
+                _tetrominoSpawner.DiscardTetromino(ActiveTetromino);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void CreateRandomTetromino()
         {
             Vector3 tetrominoPosition = Vector3.zero;
             tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x);
@@ -91,10 +106,6 @@ namespace Tetris
             ActiveTetromino = _tetrominoSpawner.SpawnRandomTetrominoAtPosition(tetrominoPosition);
             _autoMoveDownCounter = MoveDownInterval;
         }
-
-        #endregion
-
-        #region Private methods
 
         private bool TryMoveTetromino(Tetromino tetromino, Vector2 moveVector)
         {
@@ -155,7 +166,7 @@ namespace Tetris
                 _tetrominoSpawner.DiscardTetromino(tetromino);
                 CreateRandomTetromino();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 _playfield.ApplyToBlocksInPlayfield((block) =>
                 {
@@ -165,7 +176,7 @@ namespace Tetris
                     block.Color = Color.white;
                 });
                 _tetrominoSpawner.DiscardTetromino(tetromino);
-                _gameController.EndGame();
+                _gameController.GameOver();
                 ActiveTetromino = null;
             }
         }

@@ -49,7 +49,8 @@ namespace Tetris
         #endregion
 
         #region GamePlayfield implementation
-
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public Rect LocalPlayArea { get; private set; }
         public Rect WorldPlayArea
         {
@@ -65,10 +66,10 @@ namespace Tetris
             if (width <= 4 || height <= 4)
                 throw new Exception("Game area should be larger than 4x4.");
 
-            ClearAllBlocks();
-
             _blocks = new Block[width + LeftMargin + RightMargin, height + BottomMargin + TopMargin];
             LocalPlayArea = new Rect(LeftMargin, BottomMargin, width, height);
+            Width = width;
+            Height = height;
 
             for (int y = 0; y < _blocks.GetLength(1); ++y)
             {
@@ -87,8 +88,20 @@ namespace Tetris
                 for (int yTop = _blocks.GetLength(1) - TopMargin; yTop < _blocks.GetLength(1); ++yTop)
                     AddBlockAtPosition(new Position(x, yTop), Color.white, solid: false);
             }
+        }
 
-            
+        public void ClearGrid()
+        {
+            if (_blocks == null)
+                return;
+
+            Width = 0;
+            Height = 0;
+
+            for (int x = 0; x < _blocks.GetLength(0); ++x)
+                for (int y = 0; y < _blocks.GetLength(1); ++y)
+                    if (_blocks[x, y] != null)
+                        RemoveBlockAtPosition(new Position(x, y));
         }
 
         public Position PositionForWorldCoordinates(Vector3 worldCoordinates)
@@ -241,17 +254,6 @@ namespace Tetris
                     block.transform.DOLocalMoveY(destinationY + 0.5f, 0.5f).SetEase(Ease.OutBounce);
                 }
             }
-        }    
-
-        private void ClearAllBlocks()
-        {
-            if (_blocks == null)
-                return;
-
-            for (int x = 0; x < _blocks.GetLength(0); ++x)
-                for (int y = 0; y < _blocks.GetLength(1); ++y)
-                    if (_blocks[x, y] != null)
-                        RemoveBlockAtPosition(new Position(x, y));
         }
 
         #endregion

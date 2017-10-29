@@ -31,10 +31,7 @@ namespace Tetris
             TetrominoController.Initialize(this, Playfield, TetrominoSpawner, _gameInput, _scoreController);
             GameMenu.Initialize(this, _scoreController);
             MainMenu.Initialize(this);
-        }
 
-        private void Start()
-        {
             MainMenu.gameObject.SetActive(true);
             GameMenu.gameObject.SetActive(false);
         }
@@ -44,28 +41,40 @@ namespace Tetris
         #region GameController implementation
 
         public void StartGame(int width, int height)
-        {		
+        {
             Playfield.SetGridSize(width, height);
+            TetrominoController.Run();
             _scoreController.ResetScore();
-            TetrominoController.CreateRandomTetromino();
+
+            MainMenu.gameObject.SetActive(false);
+            GameMenu.gameObject.SetActive(true);
+            GameMenu.GameOverLabel.gameObject.SetActive(false);
 
             Rect playfieldArea = Playfield.WorldPlayArea;
             Vector3 cameraPosition = MainCamera.transform.position;
             cameraPosition.x = playfieldArea.center.x;
             cameraPosition.y = playfieldArea.center.y;
             MainCamera.transform.position = cameraPosition;
-            MainCamera.DOOrthoSize((playfieldArea.height / 2.0f) * PlayfieldToVisibleRatio, 1.0f);
+            MainCamera.orthographicSize = (playfieldArea.height / 2.0f) * PlayfieldToVisibleRatio;
+        }
 
-            MainMenu.gameObject.SetActive(false);
-            GameMenu.gameObject.SetActive(true);
+        public void QuitGame()
+        {
+            Playfield.ClearGrid();
+            TetrominoController.Stop();
+            MainMenu.gameObject.SetActive(true);
+            GameMenu.gameObject.SetActive(false);
         }
 
         public void RestartGame()
         {
-            // NOTHING HERE
+            int width = Playfield.Width;
+            int height = Playfield.Height;
+            QuitGame();
+            StartGame(width, height);
         }
 
-        public void EndGame()
+        public void GameOver()
         {
             MainCamera.DOShakePosition(1.0f, 1.0f);
             GameMenu.GameOverLabel.gameObject.SetActive(true);
