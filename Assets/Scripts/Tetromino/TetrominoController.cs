@@ -76,7 +76,6 @@ namespace Tetris
 
         public void CreateRandomTetromino()
         {
-            
             Vector3 tetrominoPosition = Vector3.zero;
             tetrominoPosition.x = Mathf.Round(_playfield.WorldPlayArea.center.x);
             tetrominoPosition.y = Mathf.Round(_playfield.WorldPlayArea.yMax - 1.0f);
@@ -92,8 +91,8 @@ namespace Tetris
 
         private bool TryMoveTetromino(Tetromino tetromino, Vector2 moveVector)
         {
-            Vector3 previousPosition = ActiveTetromino.transform.position;
-            ActiveTetromino.transform.position = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);;
+            Vector3 previousPosition = tetromino.transform.position;
+            tetromino.transform.position = previousPosition + new Vector3(moveVector.x, moveVector.y, 0.0f);;
 
             for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
             {
@@ -102,7 +101,7 @@ namespace Tetris
                 Block blockAtPosition = _playfield.BlockAtPosition(position);
                 if (blockAtPosition != null && blockAtPosition.IsSolid)
                 {
-                    ActiveTetromino.transform.position = previousPosition;
+                    tetromino.transform.position = previousPosition;
                     return false;
                 }
             }
@@ -111,9 +110,9 @@ namespace Tetris
 
         private bool TryRotateTetromino(Tetromino tetromino, Vector3 eulerAngles)
         {
-            Vector3 previousEulerAngles = ActiveTetromino.transform.rotation.eulerAngles;
+            Vector3 previousEulerAngles = tetromino.transform.rotation.eulerAngles;
             Vector3 newEulerAngles = previousEulerAngles + eulerAngles;
-            ActiveTetromino.transform.rotation = Quaternion.Euler(newEulerAngles);
+            tetromino.transform.rotation = Quaternion.Euler(newEulerAngles);
 
             Vector2[] testOffsets = SuperRotationSystem.GetTestOffsets(tetromino.WallKick, previousEulerAngles.z, newEulerAngles.z);
             for (int i = 0; i < testOffsets.Length; ++i)
@@ -122,7 +121,7 @@ namespace Tetris
                     return true;
             }
 
-            ActiveTetromino.transform.rotation = Quaternion.Euler(previousEulerAngles);
+            tetromino.transform.rotation = Quaternion.Euler(previousEulerAngles);
             return false;
         }
 
