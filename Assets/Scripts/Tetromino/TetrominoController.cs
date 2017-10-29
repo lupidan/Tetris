@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -127,24 +128,39 @@ namespace Tetris
 
         private void PlaceTetrominoOnPlayfield(Tetromino tetromino)
         {
-            HashSet<int> rowsToCheckSet = new HashSet<int>();
-            for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
+            try
             {
-                Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
-                Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);
-                Color color = tetromino.ChildBlocks[i].Color;
+                HashSet<int> rowsToCheckSet = new HashSet<int>();
+                for (int i = 0; i < tetromino.ChildBlocks.Length; ++i)
+                {
+                    Vector3 blockWorldPosition = tetromino.ChildBlocks[i].transform.position;
+                    Position position = _playfield.PositionForWorldCoordinates(blockWorldPosition);
+                    Color color = tetromino.ChildBlocks[i].Color;
 
-                _playfield.AddBlockAtPosition(position, color);
-                rowsToCheckSet.Add(position.y);
+                    _playfield.AddBlockAtPosition(position, color);
+                    rowsToCheckSet.Add(position.y);
+                }
+
+                int[] rowsToCheck = rowsToCheckSet.ToArray();
+                int[] deletedRows = _playfield.DeleteCompletedRows(rowsToCheck);
+                _playfield.ApplyGravity(deletedRows);        
+                _scoreController.UpdateScore(deletedRows, tetromino);
+
+                _tetrominoSpawner.DiscardTetromino(tetromino);
+                CreateRandomTetromino();
             }
-
-            int[] rowsToCheck = rowsToCheckSet.ToArray();
-            int[] deletedRows = _playfield.DeleteCompletedRows(rowsToCheck);
-            _playfield.ApplyGravity(deletedRows);        
-            _scoreController.UpdateScore(deletedRows, tetromino);
-
-            _tetrominoSpawner.DiscardTetromino(tetromino);
-            CreateRandomTetromino();
+            catch (Exception exception)
+            {
+                _playfield.ApplyToBlocksInPlayfield((block) =>
+                {
+                    if (block == null)
+                        return;
+                    
+                    block.Color = Color.white;
+                });
+                _tetrominoSpawner.DiscardTetromino(tetromino);
+                ActiveTetromino = null;
+            }
         }
 
         #endregion
