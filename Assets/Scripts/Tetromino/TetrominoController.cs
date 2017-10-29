@@ -23,6 +23,7 @@ namespace Tetris
         private TetrominoSpawner _tetrominoSpawner;
         private Input _input;
         private ScoreController _scoreController;
+        private SoundManager _soundManager;
         
         #region MonoBehaviour
         private void OnEnable()
@@ -38,17 +39,22 @@ namespace Tetris
                 return;
         
             _autoMoveDownCounter -= Time.deltaTime;
+            bool didMove = false;
+            bool didLand = false;
+            bool didRotate = false;
 
             if (_input.MoveLeft)
-                TryMoveTetromino(ActiveTetromino, new Vector2(-1.0f, 0.0f));
+                didMove = TryMoveTetromino(ActiveTetromino, new Vector2(-1.0f, 0.0f));
 
             if (_input.MoveRight)
-                TryMoveTetromino(ActiveTetromino, new Vector2(1.0f, 0.0f));
+                didMove = TryMoveTetromino(ActiveTetromino, new Vector2(1.0f, 0.0f));
                 
             if (_input.MoveDown || _autoMoveDownCounter <= 0.0f)
             {
                 _autoMoveDownCounter = MoveDownInterval;
                 bool couldMove = TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f));
+                didLand = !couldMove;
+                didMove = couldMove;
                 if (!couldMove)
                     PlaceTetrominoOnPlayfield(ActiveTetromino);
             }
@@ -57,19 +63,27 @@ namespace Tetris
             {
                 while(TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f)));
                 PlaceTetrominoOnPlayfield(ActiveTetromino);
+                didLand = true;
             }
 
             if (_input.RotateClockwise)
+                didRotate = TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, -90.0f));
+
+            if (_input.RotateCounterClockwise)
+                didRotate = TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, 90.0f));
+
+
+            if (didRotate)
             {
-                TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, -90.0f));
+                _soundManager.PlaySoundWithIdentifier("sfx_piecerotate");
                 ActiveTetromino.AdjustTetrominoChildBlocksRotation();
             }
 
-            if (_input.RotateCounterClockwise)
-            {
-                TryRotateTetromino(ActiveTetromino, new Vector3(0.0f, 0.0f, 90.0f));
-                ActiveTetromino.AdjustTetrominoChildBlocksRotation();
-            }
+            if (didMove)
+                _soundManager.PlaySoundWithIdentifier("sfx_piecemovement");
+
+            if (didLand)
+                _soundManager.PlaySoundWithIdentifier("sfx_pieceland");
         }
 
         private void OnDisable()
@@ -85,6 +99,7 @@ namespace Tetris
             GameController gameController, 
             Playfield playfield,
             TetrominoSpawner tetrominoSpawner,
+            SoundManager soundManager,
             Input input,
             ScoreController scoreController)
         {
@@ -93,6 +108,7 @@ namespace Tetris
             _tetrominoSpawner = tetrominoSpawner;
             _input = input;
             _scoreController = scoreController;
+            _soundManager = soundManager;
         }
 
         public void Run()
@@ -187,6 +203,13 @@ namespace Tetris
                 int[] deletedRows = _playfield.DeleteCompletedRows(rowsToCheck);
                 _playfield.ApplyGravity(deletedRows);        
                 _scoreController.UpdateScore(deletedRows, tetromino);
+
+                if (deletedRows.Length >= 4)
+                    _soundManager.PlaySoundWithIdentifier("sfx_linetetris");
+                else if (deletedRows.Length > 0)
+                    _soundManager.PlaySoundWithIdentifier("sfx_linesimple");
+                else
+                    _soundManager.PlaySoundWithIdentifier("sfx_pieceland");
 
                 _tetrominoSpawner.DiscardTetromino(tetromino);
                 CreateRandomTetromino();
