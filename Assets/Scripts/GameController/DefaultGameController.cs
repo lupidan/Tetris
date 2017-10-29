@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,10 @@ namespace Tetris
         #endregion
 
         #region GameController implementation
+
+        public TimeSpan GameTime { get; private set; }
+
+        public event GameControllerEvent<TimeSpan> OnGameTimeUpdate;
 
         public void StartGame(int width, int height)
         {
