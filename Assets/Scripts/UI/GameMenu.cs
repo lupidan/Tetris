@@ -62,6 +62,13 @@ namespace Tetris
         public void RestartButtonWasSelected()
         {
             _gameController.RestartGame();
+            _gameOverLabel.gameObject.SetActive(false);
+        }
+
+        public void QuitButtonWasSelected()
+        {
+            _gameController.QuitGame();
+            _gameOverLabel.gameObject.SetActive(false);
         }
 
         #endregion
