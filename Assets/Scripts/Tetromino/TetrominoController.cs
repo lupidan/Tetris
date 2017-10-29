@@ -15,10 +15,11 @@ namespace Tetris
 
         private float _autoMoveDownCounter = 0.0f;
 
-        private Input _input;
+        private GameController _gameController;
         public Playfield _playfield;
-        private ScoreController _scoreController;
         private TetrominoSpawner _tetrominoSpawner;
+        private Input _input;
+        private ScoreController _scoreController;
         
         #region MonoBehaviour
 
@@ -66,8 +67,14 @@ namespace Tetris
 
         #region Public methods
 
-        public void Initialize(Playfield playfield, TetrominoSpawner tetrominoSpawner, Input input, ScoreController scoreController)
+        public void Initialize(
+            GameController gameController, 
+            Playfield playfield,
+            TetrominoSpawner tetrominoSpawner,
+            Input input,
+            ScoreController scoreController)
         {
+            _gameController = gameController;
             _playfield = playfield;
             _tetrominoSpawner = tetrominoSpawner;
             _input = input;
@@ -158,6 +165,7 @@ namespace Tetris
                     block.Color = Color.white;
                 });
                 _tetrominoSpawner.DiscardTetromino(tetromino);
+                _gameController.EndGame();
                 ActiveTetromino = null;
             }
         }
