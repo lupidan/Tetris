@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,8 @@ namespace Tetris
         private ScoreController _scoreController;
         private Input _gameInput;
 
+        private bool _isCountingTime;
+
         #region MonoBehaviour methods
 
         private void Awake()
@@ -36,9 +39,23 @@ namespace Tetris
             GameMenu.gameObject.SetActive(false);
         }
 
+        private void Update()
+        {
+            if (!_isCountingTime)
+                return;
+
+            GameTime += TimeSpan.FromSeconds(Time.deltaTime);
+            if (OnGameTimeUpdate != null)
+                OnGameTimeUpdate(GameTime);
+        }
+
         #endregion
 
         #region GameController implementation
+
+        public TimeSpan GameTime { get; private set; }
+
+        public event GameControllerEvent<TimeSpan> OnGameTimeUpdate;
 
         public void StartGame(int width, int height)
         {
@@ -56,6 +73,9 @@ namespace Tetris
             cameraPosition.y = playfieldArea.center.y;
             MainCamera.transform.position = cameraPosition;
             MainCamera.orthographicSize = (playfieldArea.height / 2.0f) * PlayfieldToVisibleRatio;
+
+            GameTime = TimeSpan.Zero;
+            _isCountingTime = true;
         }
 
         public void QuitGame()
@@ -64,6 +84,7 @@ namespace Tetris
             TetrominoController.Stop();
             MainMenu.gameObject.SetActive(true);
             GameMenu.gameObject.SetActive(false);
+            _isCountingTime = false;
         }
 
         public void RestartGame()
@@ -78,6 +99,7 @@ namespace Tetris
         {
             MainCamera.DOShakePosition(1.0f, 1.0f);
             GameMenu.GameOverLabel.gameObject.SetActive(true);
+            _isCountingTime = false;
         }
 
         #endregion

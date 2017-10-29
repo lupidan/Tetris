@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Tetris
@@ -10,6 +11,7 @@ namespace Tetris
         [SerializeField] private Text _gameOverLabel;
         [SerializeField] private Text _scoreLabel;
         [SerializeField] private Text _highscoreLabel;
+        [SerializeField] private Text _timerLabel;
 
         private GameController _gameController;
         private ScoreController _scoreController;
@@ -20,15 +22,18 @@ namespace Tetris
         {
             _scoreController.OnScoreUpdate += SetDisplayedScore;
             _scoreController.OnHighscoreUpdate += SetDisplayedHighscore;
+            _gameController.OnGameTimeUpdate += SetDisplayedGameTime;
 
             SetDisplayedScore(_scoreController.Score);
             SetDisplayedHighscore(_scoreController.Highscore);
+            SetDisplayedGameTime(_gameController.GameTime);
         }
 
         private void OnDestroy()
         {
             _scoreController.OnScoreUpdate -= SetDisplayedScore;
             _scoreController.OnHighscoreUpdate -= SetDisplayedHighscore;
+            _gameController.OnGameTimeUpdate -= SetDisplayedGameTime;
         }
 
         #endregion
@@ -49,6 +54,11 @@ namespace Tetris
         public void SetDisplayedHighscore(long highscore)
         {
             SetScoreLabel(_highscoreLabel, highscore);
+        }
+
+        public void SetDisplayedGameTime(TimeSpan gameTime)
+        {
+            _timerLabel.text = gameTime.Minutes.ToString("00") + ":" + gameTime.Seconds.ToString("00");
         }
 
         #endregion
