@@ -35,15 +35,16 @@ namespace Tetris
 
 		public void StartGame(int width, int height)
 		{		
-			GamePlayfield.SetGridSize(width, height);
+			Playfield.SetGridSize(width, height);
 			_scoreController.ResetScore();
 			TetrominoController.CreateRandomTetromino();
 
+			Rect playfieldArea = Playfield.WorldPlayArea;
 			Vector3 cameraPosition = MainCamera.transform.position;
-			cameraPosition.x = GamePlayfield.WorldPlayArea.center.x;
-			cameraPosition.y = GamePlayfield.WorldPlayArea.center.y;
+			cameraPosition.x = playfieldArea.center.x;
+			cameraPosition.y = playfieldArea.center.y;
 			MainCamera.transform.position = cameraPosition;
-			MainCamera.DOOrthoSize((GamePlayfield.WorldPlayArea.height / 2.0f) * PlayfieldToVisibleRatio, 1.0f);
+			MainCamera.DOOrthoSize((playfieldArea.height / 2.0f) * PlayfieldToVisibleRatio, 1.0f);
 
 			MainMenu.gameObject.SetActive(false);
 			GameMenu.gameObject.SetActive(true);

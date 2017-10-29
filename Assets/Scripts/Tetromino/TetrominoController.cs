@@ -42,13 +42,13 @@ namespace Tetris
                 _autoMoveDownCounter = MoveDownInterval;
                 bool couldMove = TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f));
                 if (!couldMove)
-                    PlaceTetrominoOnPlayArea(ActiveTetromino);
+                    PlaceTetrominoOnPlayfield(ActiveTetromino);
             }
 
             if (_input.HardDrop)
             {
                 while(TryMoveTetromino(ActiveTetromino, new Vector2(0.0f, -1.0f)));
-                PlaceTetrominoOnPlayArea(ActiveTetromino);
+                PlaceTetrominoOnPlayfield(ActiveTetromino);
             }
 
             if (_input.RotateClockwise)
@@ -126,7 +126,7 @@ namespace Tetris
             return false;
         }
 
-        private void PlaceTetrominoOnPlayArea(Tetromino tetromino)
+        private void PlaceTetrominoOnPlayfield(Tetromino tetromino)
         {
             HashSet<int> rowsToCheckSet = new HashSet<int>();
             for (int i = 0; i < tetromino.ChildBlocks.Length; i++)
