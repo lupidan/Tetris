@@ -81,8 +81,6 @@ namespace Tetris
             _scoreController = scoreController;
         }
 
-        
-
         public void Run()
         {
             CreateRandomTetromino();
